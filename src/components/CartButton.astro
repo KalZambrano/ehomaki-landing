@@ -1,0 +1,70 @@
+---
+import CartIcon from "../assets/icons/cart.svg";
+---
+
+<button class="cart-btn" id="openCart">
+  <div class="relative">
+    <CartIcon class="size-8" />
+  </div>
+  <span class="cart-count" id="cartCount">0</span>
+</button>
+<style>
+  .cart-btn {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    background: none;
+    border: 1px solid var(--gold);
+    border-radius: 100%;
+    color: var(--gold);
+    padding: 1rem;
+    font-family: "DM Sans", sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    z-index: 4;
+  }
+  .cart-btn:hover {
+    background: var(--gold);
+    color: var(--black);
+  }
+  .cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--red);
+    color: white;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  const cartOverlay = document.getElementById("cartOverlay");
+  const cartDrawer = document.getElementById("cartDrawer");
+
+  // ── OPEN/CLOSE CART ──
+  document
+    .getElementById("openCart")
+    .addEventListener("click", () => toggleCart(true));
+  document
+    .getElementById("closeCart")
+    .addEventListener("click", () => toggleCart(false));
+  cartOverlay.addEventListener("click", () => toggleCart(false));
+
+  function toggleCart(open) {
+    cartDrawer.classList.toggle("open", open);
+    cartOverlay.classList.toggle("open", open);
+    document.body.style.overflow = open ? "hidden" : "";
+  }
+</script>
