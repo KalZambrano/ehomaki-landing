@@ -1,0 +1,226 @@
+---
+import MenuCard from "./cards/MenuCard.astro";
+import SectionContainer from "../components/SectionContainer.astro";
+
+const MENU_ITEMS = [
+  {
+    id: 1,
+    category: "makis",
+    name: "Acevichado",
+    price: 27,
+    image:
+      "https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=600&q=80",
+    description:
+      "Ebi furai, palta, cobertura de atún fresco y nuestra salsa acevichada. 10 piezas.",
+    portion: "10 pz",
+    badge: "Popular",
+    visible: true,
+  },
+  {
+    id: 2,
+    category: "makis",
+    name: "Furai Roll",
+    price: 26,
+    image:
+      "https://images.unsplash.com/photo-1617196034099-6282c9a5ba4c?w=600&q=80",
+    description:
+      "Maki frito con salmón, queso crema y palta. Crujiente por fuera, cremoso por dentro. 10 piezas.",
+    portion: "10 pz",
+    badge: null,
+    visible: true,
+  },
+  {
+    id: 3,
+    category: "makis",
+    name: "Huancaína Roll",
+    price: 25,
+    image:
+      "https://images.unsplash.com/photo-1559410545-0bdcd187e0a6?w=600&q=80",
+    description:
+      "Sakana furai, palta bañada en salsa huancaína casera. Fusión única. 10 piezas.",
+    portion: "10 pz",
+    badge: "Nikkei",
+    visible: true,
+  },
+  {
+    id: 4,
+    category: "makis",
+    name: "Gaucho",
+    price: 29,
+    image:
+      "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=600&q=80",
+    description:
+      "Lomo tempura, queso crema y chimichurri con lomo flameado al momento. 10 piezas.",
+    portion: "10 pz",
+    badge: "Premium",
+    visible: true,
+  },
+  {
+    id: 5,
+    category: "makis",
+    name: "Brasa Roll",
+    price: 26,
+    image:
+      "https://images.unsplash.com/photo-1604335399105-a0c585fd81a1?w=600&q=80",
+    description:
+      "Pollo furai, palta, salsa de ají amarillo y papas crocantes. Intenso y satisfactorio. 10 piezas.",
+    portion: "10 pz",
+    badge: null,
+    visible: true,
+  },
+  {
+    id: 6,
+    category: "makis",
+    name: "Seiji",
+    price: 27,
+    image:
+      "https://images.unsplash.com/photo-1617196034223-4c7db8e3c898?w=600&q=80",
+    description:
+      "Maki frito con crema de trucha ahumada y piel de salmón crocante. Delicado y sofisticado. 10 piezas.",
+    portion: "10 pz",
+    badge: "Lunes",
+    visible: true,
+  },
+  {
+    id: 7,
+    category: "entradas",
+    name: "Gunkan Salmón",
+    price: 15,
+    image:
+      "https://images.unsplash.com/photo-1563612116625-3012372fccce?w=600&q=80",
+    description:
+      "Cilindros de arroz con tartar de salmón fresco. También disponible con pulpo o langostino.",
+    portion: "porción",
+    badge: null,
+    visible: false,
+  },
+  {
+    id: 8,
+    category: "entradas",
+    name: "Temaki Acevichado",
+    price: 17,
+    image:
+      "https://images.unsplash.com/photo-1617196034094-7b88e59d1b3a?w=600&q=80",
+    description:
+      "Cono crujiente relleno con nuestra mezcla acevichada. También disponible Tokio.",
+    portion: "unidad",
+    badge: null,
+    visible: false,
+  },
+  {
+    id: 9,
+    category: "entradas",
+    name: "Alitas Nikkei",
+    price: 29.9,
+    image:
+      "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=600&q=80",
+    description:
+      "Alitas bañadas en salsas teriyaki, acevichadas o maracuyá. Perfectas para compartir.",
+    portion: "porción",
+    badge: "Combo",
+    visible: false,
+  },
+];
+---
+
+<SectionContainer title="Nuestros Makis" subtitle="Carta" name="menu">
+  <div class="menu-tabs">
+    <button class="tab-btn active" data-cat="makis">Makis</button>
+    <button class="tab-btn" data-cat="entradas">Entradas</button>
+  </div>
+  <div class="menu-grid" id="menuGrid">
+    <!-- Makis -->
+    {MENU_ITEMS.map((item) => <MenuCard item={item} />)}
+  </div>
+</SectionContainer>
+
+<style>
+  /* ── MENU SECTION ── */
+  #menu {
+    padding: 6rem 4rem;
+    position: relative;
+  }
+
+  .menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+  }
+
+  .menu-tabs {
+    display: flex;
+    gap: 0.25rem;
+    background: var(--dark);
+    padding: 0.25rem;
+    border: 1px solid var(--border);
+  }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: "DM Sans", sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.5rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn.active {
+    background: var(--gold);
+    color: var(--black);
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    background: var(--border);
+  }
+</style>
+
+<script>
+  // Mostrar makis por defecto al cargar la página
+  const tabBtns = document.querySelectorAll(".tab-btn");
+  const allCards = document.querySelectorAll(".menu-card");
+
+  // estado inicial (makis)
+  allCards.forEach((card) => {
+    if (card.dataset.cat !== "makis") {
+      card.classList.add("hidden");
+    }
+  });
+
+  tabBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const category = btn.dataset.cat;
+
+      tabBtns.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      allCards.forEach((card) => {
+        if (card.dataset.cat === category) {
+          card.classList.remove("hidden");
+        } else {
+          card.classList.add("hidden");
+        }
+      });
+    });
+  });
+
+  // ── TABS ──
+  document.querySelectorAll(".tab-btn").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      document
+        .querySelectorAll(".tab-btn")
+        .forEach((t) => t.classList.remove("active"));
+      tab.classList.add("active");
+      const cat = tab.dataset.cat;
+      document.querySelectorAll(".menu-card").forEach((card) => {
+        card.classList.toggle("visible", card.dataset.cat === cat);
+      });
+    });
+  });
+</script>

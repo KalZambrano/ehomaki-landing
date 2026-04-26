@@ -1,0 +1,63 @@
+---
+import ClockIcon from "../assets/icons/clock.svg"
+import LocationIcon from "../assets/icons/location.svg"
+import JapaneseCastle from "../assets/icons/japanese-castle.svg"
+---
+
+<div id="info" class= "info-strip bg-dark border-t border-b border-gray-800 p-8 grid grid-cols-1 md:grid-cols-3">
+  <div class="info-block border-b md:border-b-0 md:border-r border-gray-800 reveal">
+    <ClockIcon class="mb-4 size-8"/>
+    <div class="info-label">Horarios</div>
+    <div class="info-value">
+      Lunes – Sábado<br />12:00 PM – 10:00 PM<br /><br />
+      Domingos<br />12:00 PM – 06:00 PM
+    </div>
+  </div>
+  <div class="info-block border-b md:border-b-0 md:border-r border-gray-800 reveal">
+    <LocationIcon class="mb-4 size-8"/>
+    <div class="info-label">Ubicación</div>
+    <div class="info-value">
+      Av. Alameda Los Cedros 366<br />Chorrillos, Lima<br /><br />
+      <a
+        href="https://wa.me/51941442899"
+        target="_blank"
+        style="color:var(--gold);text-decoration:none;font-size:0.85rem;"
+        >+51 941 442 899</a
+      >
+    </div>
+  </div>
+  <div class="info-block reveal">
+    <JapaneseCastle class="mb-4 size-8"/>
+    <div class="info-label">Nuestra filosofía</div>
+    <div class="info-value">
+      Fusión honesta entre la tradición japonesa y los sabores que crecimos
+      comiendo en Lima. Cada roll cuenta una historia.
+    </div>
+  </div>
+</div>
+
+<style>
+  .info-strip {
+    background: var(--dark);
+  }
+  .info-block {
+    padding: 2rem;
+  }
+  .info-block:last-child {
+    border-right: none;
+  }
+  .info-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+  .info-value {
+    font-family: "Noto Serif JP", serif;
+    font-size: 0.95rem;
+    color: var(--white);
+    line-height: 1.7;
+  }
+</style>

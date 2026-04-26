@@ -1,0 +1,216 @@
+<section class="hero min-h-dvh relative overflow-hidden grid grid-cols-1 md:grid-cols-2">
+  <div class="hero-left">
+    <div class="hero-tag">
+      <span class="line"></span>
+      <span>Sushi Bar · Chorrillos, Lima</span>
+    </div>
+    <h1>
+      <span>El Sushi</span>
+      <span class="accent">que nació</span>
+      <span class="stroke">en Lima</span>
+    </h1>
+    <p class="hero-desc">
+      Fusión auténtica donde el Japón se encuentra con el sabor peruano. Makis
+      con huancaína, lomo flameado y ají amarillo — una experiencia que solo
+      existe aquí.
+    </p>
+    <div class="hero-ctas mb-20">
+      <a href="#menu" class="btn-primary">Ver Menú</a>
+      <a href="https://wa.me/51941442899" class="btn-ghost" target="_blank">
+        Pedir por WhatsApp <span class="arrow">→</span>
+      </a>
+    </div>
+    <div class="flex flex-row xl:flex-col gap-8 absolute bottom-12 left-16 xl:top-1/2 xl:-translate-y-1/2 xl:left-96 xl:translate-x-2/3">
+      <div class="stat-item">
+        <div class="stat-num">30+</div>
+        <div class="stat-label">Variedades</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">50</div>
+        <div class="stat-label">Piezas max. por box</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Ingredientes frescos</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right hidden md:block">
+    <img
+      class="hero-img"
+      src="/night-wallpaper.webp"
+      alt="Sushi platter Ehomakis"
+    />
+  </div>
+  <div class="hero-kanji hidden md:block">寿司</div>
+</section>
+
+<style>
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+  .hero-tag .line {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .hero-tag span {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .hero h1 {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(4rem, 7vw, 7rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 .accent {
+    color: var(--gold);
+    display: block;
+  }
+  .hero h1 .stroke {
+    -webkit-text-stroke: 1px rgba(250, 247, 242, 0.3);
+    color: transparent;
+    display: block;
+  }
+
+  .hero-desc {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    max-width: 380px;
+    margin-bottom: 3rem;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 0.9rem 2.5rem;
+    font-family: "DM Sans", sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+    clip-path: polygon(
+      0 0,
+      calc(100% - 8px) 0,
+      100% 8px,
+      100% 100%,
+      8px 100%,
+      0 calc(100% - 8px)
+    );
+  }
+  .btn-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s;
+  }
+  .btn-ghost:hover {
+    color: var(--white);
+  }
+  .btn-ghost .arrow {
+    transition: transform 0.2s;
+  }
+  .btn-ghost:hover .arrow {
+    transform: translateX(4px);
+  }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-right::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, var(--black) 0%, transparent 40%);
+    z-index: 1;
+  }
+  .hero-right::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, var(--black) 100%);
+    z-index: 1;
+  }
+  .hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+  }
+
+  .hero-kanji {
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: "Noto Serif JP", serif;
+    font-size: 10rem;
+    font-weight: 900;
+    color: rgba(201, 151, 58, 0.7);
+    writing-mode: vertical-rl;
+    z-index: 0;
+    letter-spacing: 0.1em;
+    pointer-events: none;
+  }
+
+  .stat-item {
+    text-align: left;
+  }
+  .stat-num {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 2.2rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.25rem;
+  }
+</style>
