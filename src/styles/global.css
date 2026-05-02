@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
-@import 'tailwind-animations';
+@import "tailwind-animations";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -186,4 +186,136 @@
   html {
     @apply font-sans;
   }
+}
+
+.menu-card {
+  background: var(--card);
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s;
+  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: 0.5rem;
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.menu-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 0;
+  background: var(--gold);
+  transition: height 0.3s;
+}
+.menu-card:hover::before {
+  height: 100%;
+}
+.menu-card:hover {
+  background: #1c1810;
+}
+
+@media (max-width: 768px) {
+
+  .menu-card > div {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+}
+
+.card-img-wrap {
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  position: relative;
+
+  @media (max-width: 768px) {
+    margin-bottom: 0px;
+    width: 150px;
+  }
+}
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+  filter: saturate(0.85);
+}
+.menu-card:hover .card-img {
+  transform: scale(1.06);
+  filter: saturate(1);
+}
+
+.card-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: var(--red);
+  color: white;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+}
+
+.card-name {
+  font-family: "Noto Serif JP", serif;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--white);
+}
+.card-desc {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+}
+
+.card-price {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.5rem;
+  color: var(--gold);
+}
+.card-price span {
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.add-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: all 0.2s;
+  line-height: 1;
+}
+.add-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(201, 151, 58, 0.08);
+}
+.add-btn.added {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--black);
 }
