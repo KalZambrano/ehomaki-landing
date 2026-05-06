@@ -1,7 +1,7 @@
 ---
-import FacebookIcon from "@/assets/facebook.svg"
-import InstagramIcon from "@/assets/instagram.svg"
-import TiktokIcon from "@/assets/tiktok.svg"
+import FacebookIcon from "@/assets/facebook.svg";
+import InstagramIcon from "@/assets/instagram.svg";
+import TiktokIcon from "@/assets/tiktok.svg";
 ---
 
 <nav class="animate-fade-in-down delay-200">
@@ -18,23 +18,37 @@ import TiktokIcon from "@/assets/tiktok.svg"
     <li><a href="#menu">Menú</a></li>
     <li><a href="#combos">Combos</a></li>
     <li><a href="#visitanos">Visítanos</a></li>
-    <ul class="social-links">
-      <li>
-        <a href="https://www.facebook.com/ehomakis" target="_blank" aria-label="Facebook">
-          <FacebookIcon />
-        </a>
-      </li>
-      <li>
-        <a href="https://www.instagram.com/ehomakis_lima/" target="_blank" aria-label="Instagram">
-          <InstagramIcon />
-        </a>
-      </li>
-      <li>
-        <a href="https://www.tiktok.com/@ehomakis_lima" target="_blank" aria-label="WhatsApp">
-          <TiktokIcon />
-        </a>
-      </li>
-    </ul>
+    <li class="social-links">
+      <ul class="flex gap-2">
+        <li>
+          <a
+            href="https://www.facebook.com/ehomakis"
+            target="_blank"
+            aria-label="Facebook"
+          >
+            <FacebookIcon />
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www.instagram.com/ehomakis_lima/"
+            target="_blank"
+            aria-label="Instagram"
+          >
+            <InstagramIcon />
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www.tiktok.com/@ehomakis_lima"
+            target="_blank"
+            aria-label="WhatsApp"
+          >
+            <TiktokIcon />
+          </a>
+        </li>
+      </ul>
+    </li>
   </ul>
 </nav>
 
@@ -203,14 +217,16 @@ import TiktokIcon from "@/assets/tiktok.svg"
     padding-top: 1.5rem;
   }
 
-  .social-links li {
+  .social-links > ul > li {
     display: inline-block;
     margin-right: 1rem;
   }
 
   .social-links a {
     color: var(--muted);
-    transition: color 0.2s, transform 0.2s;
+    transition:
+      color 0.2s,
+      transform 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -235,7 +251,7 @@ import TiktokIcon from "@/assets/tiktok.svg"
       width: 100%;
     }
 
-    .social-links li {
+    .social-links > ul > li {
       margin: 0;
     }
   }

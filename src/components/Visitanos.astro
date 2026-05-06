@@ -1,7 +1,6 @@
 ---
 import SectionContainer from "./SectionContainer.astro";
-import LeafletMap from "./cards/LeafletMap.astro";
-import { ehomakisGeoJSON } from "@/const/geoJSONData";
+import { EhomakiMap } from "./cards/EhomakiMap.tsx";
 import CarIcon from "@/assets/icons/car.svg";
 import BusIcon from "@/assets/icons/bus.svg";
 import LocationIcon from "@/assets/icons/map-marker.svg";
@@ -29,23 +28,24 @@ import PhoneIcon from "@/assets/icons/phone-call.svg";
       >Aquopolis Villanueva de la Cañada</a
     >
   </h3> -->
-  <div class="flex flex-col md:flex-row justify-center items-center md:justify-between gap-3">
+  <div
+    class="flex flex-col md:flex-row justify-center items-center md:justify-between gap-3"
+  >
     <div class="flex flex-col items-center md:items-start gap-2">
       <span class="flex gap-1.5 items-center"
         ><LocationIcon class="size-6" />Av. Alameda Los Cedros 366, Chorrillos</span
       >
       <span class="flex gap-1.5 items-center"
         ><PhoneIcon class="size-6" />
-        <a
-        class="font-medium"
-          href="https://wa.me/51941442899"
-          target="_blank"
+        <a class="font-medium" href="https://wa.me/51941442899" target="_blank"
           >941 442 899</a
         >
       </span>
     </div>
     <div class="text-center md:text-right">
-      <h2 class="font-medium tracking-wide text-(--gold)">Horarios de Atención:</h2>
+      <h2 class="font-medium tracking-wide text-(--gold)">
+        Horarios de Atención:
+      </h2>
       <ul>
         <li>Lunes – Sábado 12:00pm a 10:00pm</li>
         <li>Domingos 12:00pm a 06:00pm</li>
@@ -55,16 +55,17 @@ import PhoneIcon from "@/assets/icons/phone-call.svg";
 
   <div class="m-auto mt-4 flex max-w-328.75 flex-row flex-wrap gap-8 p-4">
     <div
-      class="relative h-70 md:h-157.5 min-w-75 flex-1 overflow-hidden rounded-[2rem] bg-black"
+      class="relative h-70 md:h-157.5 min-w-75 flex-1 overflow-hidden rounded-[1.5rem] bg-black"
     >
-      <LeafletMap
+      <EhomakiMap client:idle/>
+      <!-- <LeafletMap
         latitude={-12.20456994618187}
         longitude={-77.01358787855044}
         zoom={16}
         tileLayer="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
         attribution=`<a class="mr-5" href="http://www.openstreetmap.org/">OpenStreetMap</a>`
         geoJSON={[{ data: ehomakisGeoJSON, color: "green" }]}
-      />
+      /> -->
     </div>
     <div
       class="flex w-full shrink-0 flex-col gap-y-8 overflow-hidden md:w-93.75 lg:w-137.5"
