@@ -286,18 +286,6 @@
   filter: saturate(1);
 }
 
-.card-badge {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  background: var(--red);
-  color: white;
-  font-size: 0.6rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  padding: 0.2rem 0.6rem;
-}
-
 .card-name {
   font-family: "Noto Serif JP", serif;
   font-size: 1rem;
@@ -384,4 +372,191 @@
   background: var(--gold);
   border-color: var(--gold);
   color: var(--black);
+}
+
+.demo-wrap {
+  background: var(--surface);
+  padding: 1.5rem;
+  border-radius: var(--border-radius-lg);
+  border: 0.5px solid var(--color-border-tertiary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.demo-label {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  margin-bottom: 0.25rem;
+}
+.cart-item {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  padding: 0.9rem;
+  align-items: center;
+  background: var(--surface2);
+  border-radius: 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: border-color 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.cart-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--gold);
+  border-radius: 3px 0 0 3px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.cart-item:hover {
+  border-color: rgba(200, 150, 42, 0.25);
+}
+.cart-item:hover::before {
+  opacity: 1;
+}
+.ci-img-wrap {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  border-radius: 0.75rem;
+  overflow: visible;
+  background: rgba(255, 255, 255, 0.06);
+  align-self: start;
+  flex-shrink: 0;
+}
+.ci-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.85) brightness(0.95);
+}
+
+.ci-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.ci-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.01em;
+}
+.ci-unit-price {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.ci-price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.01em;
+}
+.ci-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.55rem;
+}
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.qty-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  transition:
+    color 0.15s,
+    background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qty-btn:hover {
+  color: var(--gold);
+  background: rgba(200, 150, 42, 0.1);
+}
+.qty-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.qty-num {
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-width: 22px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.85);
+}
+.remove-btn {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 24px;
+  height: 24px;
+  border-radius: 10px;
+  background-color: var(--color-red-500);
+  color: white;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.remove-btn:hover {
+  background-color: var(--color-red-600);
+}
+.divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin: 0;
+}
+.cart-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.2rem 0;
+}
+.cart-total-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+.cart-total-price {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+}
+.cart-total-price span {
+  color: var(--gold);
 }

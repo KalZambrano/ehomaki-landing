@@ -16,13 +16,13 @@ import { AdMarquee } from "../components/AdMarquee";
 
 <Header />
 <Hero />
-  <AdMarquee client:idle />
-  <Menu />
-  <Combos />
-  <AboutUs />
-  <CommentsMarquee client:idle />
-  <Visitanos />
-  <Galeria />
+<AdMarquee client:idle />
+<Menu />
+<Combos />
+<AboutUs />
+<CommentsMarquee client:idle />
+<Visitanos />
+<Galeria />
 <Footer />
 
 <!-- TOAST -->
@@ -152,18 +152,30 @@ import { AdMarquee } from "../components/AdMarquee";
         el.className = "cart-item";
         el.dataset.id = item.id;
         el.innerHTML = `
-          <img class="ci-img" src="${item.img}" alt="${item.name}" width="100" height="80" />
+          <div class="ci-img-wrap">
+            <img src="${item.img}" alt="${item.name}" />
+            <button type="button" class="remove-btn" data-id="${item.id}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M4 7l16 0" />
+                <path d="M10 11l0 6" />
+                <path d="M14 11l0 6" />
+                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+              </svg>
+            </button>
+          </div>
           <div>
             <div class="ci-name">${item.name}</div>
+            ${item.qty > 1 ? `<div class="ci-unit-price">S/ ${item.price.toFixed(2)} c/u</div>` : ""}
             <div class="ci-price">S/ ${(item.price * item.qty).toFixed(2)}</div>
           </div>
           <div class="ci-controls">
             <div class="qty-controls">
-              <button type="button" class="qty-btn" data-action="dec" data-id="${item.id}">−</button>
+              <button type="button" class="qty-btn" data-action="dec" data-id="${item.id}" ${item.qty === 1 ? "disabled" : ""}>−</button>
               <span class="qty-num">${item.qty}</span>
               <button type="button" class="qty-btn" data-action="inc" data-id="${item.id}">+</button>
             </div>
-            <button type="button" class="remove-btn" data-id="${item.id}">Eliminar</button>
           </div>
         `;
         cartItemsEl.appendChild(el);
