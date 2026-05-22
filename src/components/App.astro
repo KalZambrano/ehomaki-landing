@@ -1,20 +1,15 @@
 ---
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
-import Footer from "../components/Footer.astro";
 import Menu from "../components/Menu.astro";
 import Galeria from "../components/Galeria.astro";
 import AboutUs from "../components/AboutUs.astro";
 import Combos from "../components/Combos.astro";
-import CartSection from "./CartSection.astro";
 import Visitanos from "./Visitanos.astro";
 import { CommentsMarquee } from "../components/CommentsMarquee";
 import { AdMarquee } from "../components/AdMarquee";
 import { Toast } from "../components/Toast";
 ---
-
-<CartSection />
-
 <Header />
 <Hero />
 <AdMarquee client:idle />
@@ -24,5 +19,4 @@ import { Toast } from "../components/Toast";
 <CommentsMarquee client:idle />
 <Visitanos />
 <Galeria />
-<Footer />
 <Toast client:idle />

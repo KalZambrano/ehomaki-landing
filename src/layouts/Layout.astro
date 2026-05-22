@@ -4,6 +4,9 @@ import "@fontsource-variable/onest/wght.css";
 import "@fontsource/bebas-neue";
 import "@fontsource/dm-sans";
 import "@fontsource/noto-serif-jp";
+
+import Footer from "@/components/Footer.astro"
+import CartSection from "@/components/CartSection.astro"
 ---
 
 <!doctype html>
@@ -51,6 +54,8 @@ import "@fontsource/noto-serif-jp";
       <slot />
     </main>
   </body>
+  <CartSection />
+  <Footer />
 </html>
 
 <style>
