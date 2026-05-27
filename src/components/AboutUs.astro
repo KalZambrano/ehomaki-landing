@@ -27,191 +27,308 @@ const STATCARDS = [
 ];
 ---
 
-<div
+<section
   id="info"
-  class="info-strip bg-dark border-t border-b border-gray-800 py-8"
+  class="relative overflow-hidden
+    border-y border-[#1b1812]
+    bg-[#090806]
+    py-12 md:py-16"
 >
-  <!-- DESKTOP: grid estático -->
-  <div class="hidden md:grid md:grid-cols-3 divide-x divide-gray-800">
+  {/* Ambient glow */}
+  <div
+    class="pointer-events-none absolute inset-0 opacity-40
+      [background:radial-gradient(circle_at_top,rgba(200,155,60,0.08),transparent_40%)]"
+  >
+  </div>
+
+  {/* Desktop */}
+  <div
+    class="relative z-10 hidden
+      mx-auto max-w-7xl
+      md:grid md:grid-cols-3"
+  >
     {
-      STATCARDS.map((card) => (
-        <div class="info-block p-10 reveal flex flex-col items-center text-center gap-4">
-          <card.icon class="size-16" />
+      STATCARDS.map((card, index) => (
+        <div
+          class={`
+          group relative flex flex-col items-center text-center
+          px-10 py-8
+          ${index !== 2 ? "border-r border-[#1c1913]" : ""}
+        `}
+        >
+          {/* Decorative vertical glow */}
+          <div
+            class="
+            absolute inset-y-10 right-0 w-px
+            bg-linear-to-b from-transparent via-[#c89b3c]/20 to-transparent
+          "
+          />
 
-          <div class="label-wrap">
-            <div class="label-bg" />
-            <div class="label-text">{card.label}</div>
+          {/* Icon wrap */}
+          <div
+            class="
+            relative mb-8 flex h-24 w-24 items-center justify-center
+            rounded-full border border-[#2a2418]
+            bg-[#0f0d09]
+            transition-all duration-500
+            group-hover:border-[#c89b3c]/40
+            group-hover:bg-[#15110c]
+          "
+          >
+            <div
+              class="
+              absolute inset-0 rounded-full opacity-0
+              transition-opacity duration-500
+              group-hover:opacity-100
+              shadow-[0_0_40px_rgba(200,155,60,0.18)]
+            "
+            />
+
+            <card.icon
+              class="
+              relative z-10 size-10
+              transition-transform duration-500
+              group-hover:scale-110
+            "
+            />
           </div>
 
-          <div class="divider-dot" />
+          {/* Label */}
+          <div
+            class="
+            relative mb-6 inline-flex items-center justify-center
+          "
+          >
+            <div
+              class="
+              absolute inset-0
+              -rotate-1 skew-x-[-8deg]
+              rounded-sm
+              bg-[#c89b3c]
+            "
+            />
 
-          <div class="info-value font-serif text-sm leading-relaxed">
+            <span
+              class="
+              relative z-10
+              px-5 py-2
+              text-[11px] font-bold
+              uppercase tracking-[0.35em]
+              text-black
+            "
+            >
+              {card.label}
+            </span>
+          </div>
+
+          {/* Mini divider */}
+          <div
+            class="
+            mb-6 flex items-center gap-2
+          "
+          >
+            <div class="h-px w-8 bg-[#c89b3c]/30" />
+            <div class="size-1 rounded-full bg-[#c89b3c]" />
+            <div class="h-px w-8 bg-[#c89b3c]/30" />
+          </div>
+
+          {/* Text */}
+          <p
+            class="
+            max-w-85
+            font-['Noto_Serif_JP']
+            text-[15px]
+            leading-loose
+            text-[#e8e1d5]
+          "
+          >
             {card.value}
-          </div>
+          </p>
         </div>
       ))
     }
   </div>
 
-  <!-- MOBILE: slider -->
-  <div class="md:hidden relative overflow-hidden">
+  {/* MOBILE SLIDER */}
+  <div class="relative z-10 md:hidden">
     <div
       id="info-slider"
-      class="flex transition-transform duration-500 ease-in-out"
+      class="flex transition-transform duration-500 ease-out"
     >
       {
         STATCARDS.map((card) => (
-          <div class="info-slide min-w-full p-8 flex flex-col gap-4">
-            <card.icon class="size-8 text-(--gold)" />
-            <div class="text-[0.65rem] tracking-[0.3em] uppercase text-(--gold)">
-              {card.label}
-            </div>
-            <div class="font-serif text-base text-white leading-relaxed">
-              {card.value}
+          <div class="min-w-full px-6">
+            <div
+              class="
+              relative overflow-hidden
+              rounded-[28px]
+              border border-[#1f1b14]
+              bg-[#0d0b08]
+              p-8
+              text-center
+            "
+            >
+              {/* Glow */}
+              <div
+                class="
+                absolute inset-0 opacity-40
+                [background:radial-gradient(circle_at_top,rgba(200,155,60,0.12),transparent_60%)]
+              "
+              />
+
+              {/* Icon */}
+              <div
+                class="
+                relative z-10 mx-auto mb-6
+                flex h-20 w-20 items-center justify-center
+                rounded-full
+                border border-[#2a2418]
+                bg-[#14110c]
+              "
+              >
+                <card.icon class="size-8" />
+              </div>
+
+              {/* Label */}
+              <div class="relative z-10 mb-5 inline-flex">
+                <div
+                  class="
+                  absolute inset-0
+                  -rotate-1 skew-x-[-8deg]
+                  bg-[#c89b3c]
+                "
+                />
+
+                <span
+                  class="
+                  relative z-10
+                  px-4 py-2
+                  text-[10px] font-bold
+                  uppercase tracking-[0.3em]
+                  text-black
+                "
+                >
+                  {card.label}
+                </span>
+              </div>
+
+              {/* Text */}
+              <p
+                class="
+                relative z-10
+                font-['Noto_Serif_JP']
+                text-[15px]
+                leading-[1.9]
+                text-[#ece6dc]
+              "
+              >
+                {card.value}
+              </p>
             </div>
           </div>
         ))
       }
     </div>
 
-    <!-- Dots + flechas -->
-    <div class="flex items-center justify-between px-8 pb-8 pt-2">
+    {/* Controls */}
+    <div class="mt-8 flex items-center justify-center gap-6">
       <button
         type="button"
         id="info-prev"
         aria-label="Anterior"
-        class="text-white/50 hover:text-(--gold) transition-colors"
+        class="flex size-10 items-center justify-center
+          rounded-full border border-[#2a2418]
+          bg-[#0f0d09]
+          text-white/60
+          transition-all duration-300
+          hover:border-[#c89b3c]/40
+          hover:text-[#c89b3c]"
       >
-        <ChevronLeft class="size-5" />
+        <ChevronLeft class="size-4" />
       </button>
 
-      <div class="flex gap-3" id="info-dots">
+      <div class="flex items-center gap-2" id="info-dots">
         <button
           type="button"
           data-dot="0"
-          aria-label="Primera cartilla"
-          class="info-dot w-6 h-4 rounded-full bg-(--gold) transition-all"></button>
+          class="info-dot h-2 w-8 rounded-full
+            bg-[#c89b3c]
+            transition-all duration-300"
+        ></button>
+
         <button
           type="button"
           data-dot="1"
-          aria-label="Segunda cartilla"
-          class="info-dot size-4 rounded-full bg-white/20 transition-all"></button>
+          class="info-dot size-2 rounded-full
+            bg-white/20
+            transition-all duration-300"
+        ></button>
+
         <button
           type="button"
           data-dot="2"
-          aria-label="Tercera cartilla"
-          class="info-dot size-4 rounded-full bg-white/20 transition-all"></button>
+          class="info-dot size-2 rounded-full
+            bg-white/20
+            transition-all duration-300"
+        ></button>
       </div>
 
       <button
         type="button"
         id="info-next"
         aria-label="Siguiente"
-        class="text-white/50 hover:text-(--gold) transition-colors"
+        class="flex size-10 items-center justify-center
+          rounded-full border border-[#2a2418]
+          bg-[#0f0d09]
+          text-white/60
+          transition-all duration-300
+          hover:border-[#c89b3c]/40
+          hover:text-[#c89b3c]"
       >
-        <ChevronRight class="size-5" />
+        <ChevronRight class="size-4" />
       </button>
     </div>
   </div>
-</div>
-
-<style>
-  .info-strip {
-    background: var(--dark);
-  }
-  .info-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 2rem;
-  }
-
-  .label-wrap {
-    position: relative;
-    display: inline-block;
-  }
-  .label-bg {
-    position: absolute;
-    inset: -4px -10px;
-    background: var(--gold);
-    transform: skewX(-4deg) rotate(-1deg);
-    border-radius: 2px;
-  }
-  .label-text {
-    position: relative;
-    z-index: 1;
-    font-family: 'Onest', sans-serif;
-    font-size: 0.85rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: var(--black);
-    white-space: nowrap;
-    padding: 0.1rem 0.2rem;
-  }
-  .divider-dot {
-    width: 4px;
-    height: 4px;
-    background: var(--gold);
-    border-radius: 50%;
-    opacity: 0.7;
-  }
-  .info-block:last-child {
-    border-right: none;
-  }
-  .info-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 0.75rem;
-  }
-  .info-value {
-    font-family: "Noto Serif JP", serif;
-    font-size: 0.95rem;
-    color: var(--white);
-    line-height: 1.7;
-  }
-
-  .info-slide {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 2rem;
-  }
-</style>
+</section>
 
 <script>
   const slider = document.getElementById("info-slider");
-  const dots = document.querySelectorAll<HTMLElement>(".info-dot");
+  const dots = document.querySelectorAll(".info-dot");
   const prev = document.getElementById("info-prev");
   const next = document.getElementById("info-next");
 
   let current = 0;
   const total = 3;
 
-  function goTo(index: number) {
+  function goTo(index) {
     current = (index + total) % total;
-    slider!.style.transform = `translateX(-${current * 100}%)`;
+
+    slider.style.transform = `translateX(-${current * 100}%)`;
 
     dots.forEach((dot, i) => {
-      const isActive = i === current;
-      dot.style.width = isActive ? "1.5rem" : "1rem";
-      dot.style.background = isActive ? "var(--gold)" : "rgba(255,255,255,0.2)";
+      const active = i === current;
+
+      dot.classList.toggle("w-8", active);
+      dot.classList.toggle("h-2", active);
+      dot.classList.toggle("bg-[#c89b3c]", active);
+
+      dot.classList.toggle("size-2", !active);
+      dot.classList.toggle("bg-white/20", !active);
     });
   }
 
   prev?.addEventListener("click", () => goTo(current - 1));
   next?.addEventListener("click", () => goTo(current + 1));
+
   dots.forEach((dot) => {
-    dot.addEventListener("click", () => goTo(Number(dot.dataset.dot)));
+    dot.addEventListener("click", () => {
+      goTo(Number(dot.dataset.dot));
+    });
   });
 
-  // Swipe touch
+  // Swipe
   let startX = 0;
+
   slider?.addEventListener(
     "touchstart",
     (e) => {
@@ -219,8 +336,12 @@ const STATCARDS = [
     },
     { passive: true },
   );
+
   slider?.addEventListener("touchend", (e) => {
     const diff = startX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+
+    if (Math.abs(diff) > 40) {
+      goTo(diff > 0 ? current + 1 : current - 1);
+    }
   });
 </script>

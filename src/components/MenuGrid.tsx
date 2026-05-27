@@ -34,6 +34,46 @@ export function MenuGrid() {
         {activeCategory === "entradas" &&
           ENTRADAS.map((item) => <MenuCard key={item.id} item={item} />)}
       </div>
+      <div className="mt-14 flex justify-center">
+        <a
+          href="/carta"
+          className="
+      group relative overflow-hidden
+      rounded-full border border-[#c89b3c]/30
+      bg-[#0f0c09]
+      px-6 py-3
+      text-xs font-medium uppercase tracking-[0.25em]
+      text-[#c89b3c]
+      transition-colors duration-300
+      hover:text-black
+    "
+        >
+          {/* Hover background */}
+          <span
+            className="
+        absolute inset-0
+        origin-left scale-x-0
+        rounded-full
+        bg-[#c89b3c]
+        transition-transform duration-300 ease-out
+        group-hover:scale-x-100
+      "
+          />
+
+          {/* Content */}
+          <span className="relative z-10 flex items-center gap-3">
+            Ver carta completa
+            <span
+              className="
+          transition-transform duration-300
+          group-hover:translate-x-1
+        "
+            >
+              →
+            </span>
+          </span>
+        </a>
+      </div>
     </>
   );
 }
