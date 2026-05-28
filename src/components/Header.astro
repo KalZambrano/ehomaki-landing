@@ -62,23 +62,7 @@ import TiktokIcon from "@/assets/tiktok.svg";
   </ul>
 </nav>
 
-<script>
-  const menuToggle = document.getElementById("menu-toggle");
-  const navLinks = document.getElementById("nav-links");
-
-  menuToggle?.addEventListener("click", () => {
-    const expanded = menuToggle.getAttribute("aria-expanded") === "true";
-    navLinks?.classList.toggle("active");
-    menuToggle?.classList.toggle("active");
-    menuToggle?.setAttribute("aria-expanded", String(!expanded));
-    menuToggle?.setAttribute(
-      "aria-label",
-      expanded ? "Abrir menú" : "Cerrar menú",
-    );
-  });
-</script>
-
-<style is:global>
+<style>
   .nav-logo {
     display: flex;
     flex-direction: column;
@@ -98,44 +82,6 @@ import TiktokIcon from "@/assets/tiktok.svg";
     letter-spacing: 0.08em;
     color: var(--white);
   }
-</style>
-
-<style>
-  nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.25rem 4rem;
-    /* background: linear-gradient(
-      to bottom,
-      rgba(10, 8, 5, 0.95) 0%,
-      transparent 100%
-    );
-    backdrop-filter: blur(8px); */
-    animation: nav-shadown 1s linear both;
-    animation-timeline: scroll();
-    animation-range: 0 100px;
-  }
-
-  @keyframes nav-shadown {
-    0% {
-      background-color: transparent;
-      padding: 1.5rem 3rem;
-    }
-    100% {
-      background: rgba(10, 8, 5, 0.68);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(10px);
-      padding: 1rem 3rem;
-      border-bottom: 1px solid rgba(201, 151, 58, 0.12);
-    }
-  }
-
   .nav-links {
     display: flex;
     gap: 2.5rem;
@@ -293,3 +239,19 @@ import TiktokIcon from "@/assets/tiktok.svg";
     }
   }
 </style>
+
+<script>
+  const menuToggle = document.getElementById("menu-toggle");
+  const navLinks = document.getElementById("nav-links");
+
+  menuToggle?.addEventListener("click", () => {
+    const expanded = menuToggle.getAttribute("aria-expanded") === "true";
+    navLinks?.classList.toggle("active");
+    menuToggle?.classList.toggle("active");
+    menuToggle?.setAttribute("aria-expanded", String(!expanded));
+    menuToggle?.setAttribute(
+      "aria-label",
+      expanded ? "Abrir menú" : "Cerrar menú",
+    );
+  });
+</script>

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { CartItem } from "./cards/CartItem";
+import { showToast } from "../lib/events";
 
 export type CartItemType = {
   id: string;
@@ -28,23 +29,6 @@ export default function CartApp() {
       countEl.textContent = String(cartCount);
     }
   }, [cartCount]);
-
-  const showToast = (message: string) => {
-    // setToastMessage(message);
-    // setToastVisible(true);
-    // if (toastTimer.current) window.clearTimeout(toastTimer.current);
-    // toastTimer.current = window.setTimeout(() => {
-    //   setToastVisible(false);
-    //   toastTimer.current = null;
-    // }, 2000);
-
-    const event = new CustomEvent("toast", {
-      detail: {
-        message,
-      },
-    });
-    window.dispatchEvent(event);
-  };
 
   const addToCart = (
     id: string,
@@ -86,9 +70,7 @@ export default function CartApp() {
   const handleDecrement = (id: string) => {
     setCart((prevCart) =>
       prevCart
-        .map((item) =>
-          item.id === id ? { ...item, qty: item.qty - 1 } : item,
-        )
+        .map((item) => (item.id === id ? { ...item, qty: item.qty - 1 } : item))
         .filter((item) => item.qty > 0),
     );
   };
@@ -180,7 +162,20 @@ export default function CartApp() {
         {cart.length === 0 ? (
           <div className="cart-empty" id="cartEmpty">
             <div className="cart-empty-icon">🍱</div>
-            <p>Tu carrito está vacío.<br />Agrega tus makis favoritos.</p>
+            <p>
+              Tu carrito está vacío.
+              <br />
+              Agrega tus makis favoritos.
+            </p>
+            <a
+              href="/carta"
+              className="group inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.3em] text-[#c89b3c]/80 transition-colors duration-300 hover:text-[#f5f1ea]"
+            >
+              Revisa nuestra carta
+              <span className="transition-transform duration-300 group-hover:translate-x-1">
+                →
+              </span>
+            </a>
           </div>
         ) : (
           cart.map((item) => (

@@ -5,45 +5,97 @@ import SectionContainer from "../components/SectionContainer.astro";
 
 <SectionContainer title="Galería" subtitle="Nuestra comida" name="galeria">
   <div
-    class="grid grid-cols-2 md:grid-cols-5 grid-rows-7 md:grid-rows-4 gap-6 md:gap-4 [&>div]:rounded-lg [&>div]:overflow-hidden"
+    class="grid grid-cols-2 md:grid-cols-5 grid-rows-6 md:grid-rows-4 gap-4 [&>div]:rounded-lg [&>div]:overflow-hidden"
   >
     <div
-      class="md:row-span-2 col-span-2 md:col-span-1 flex flex-col justify-center items-center md:items-start"
-    >
-      <InstagramIcon class="size-12 rounded-full bg-red-400 p-2 mb-4" />
-      <h2 class="xl:text-4xl text-2xl font-bold">SÍGUENOS</h2>
-      <a
-        class="xl:text-4xl text-2xl font-bold hover:text-red-400 uppercase transition-colors"
-        href="https://www.instagram.com/ehomakis_lima/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >@ehomakis</a
-      >
-    </div>
-    <div class="row-span-2 md:col-start-1 row-start-2 md:row-start-3">
+  class="
+    row-span-2 col-span-2 md:col-span-1
+    relative overflow-hidden
+    flex flex-col justify-center items-center
+    md:items-start
+    rounded-[28px]
+    border border-[#3b1325]
+    bg-[radial-gradient(circle_at_top_left,rgba(225,48,108,0.18),transparent_35%),linear-gradient(to_bottom_right,#14080d,#070707)]
+    p-6
+    transition-all duration-500
+    hover:border-[#e1306c]/40
+    hover:shadow-[0_0_40px_rgba(225,48,108,0.12)]
+  "
+>
+  {/* subtle glow */}
+  <div
+    class="
+      pointer-events-none absolute inset-0 opacity-0
+      transition-opacity duration-500
+      hover:opacity-100
+      [background:radial-gradient(circle_at_top_left,rgba(253,29,29,0.12),transparent_45%)]
+    "
+  />
+
+  <InstagramIcon
+    class="
+      relative z-10
+      mb-5 size-14
+      rounded-full
+      bg-[linear-gradient(135deg,#feda75_0%,#fa7e1e_22%,#d62976_50%,#962fbf_75%,#4f5bd5_100%)]
+      p-3 text-white
+      shadow-[0_0_30px_rgba(214,41,118,0.35)]
+    "
+  />
+
+  <h2
+    class="
+      relative z-10
+      font-['Bebas_Neue']
+      text-5xl leading-[0.9]
+      text-[#f5f1ea]
+      md:text-4xl
+      xl:text-5xl
+    "
+  >
+    SÍGUENOS
+  </h2>
+
+  <a
+    class="
+      relative z-10
+      mt-2
+      text-2xl font-bold
+      uppercase
+      text-[#ff7aa2]
+      transition-all duration-300
+      hover:text-[#ff98b8]
+      hover:tracking-[0.02em]
+      md:text-xl
+      xl:text-2xl
+    "
+    href="https://www.instagram.com/ehomakis_lima/"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    @ehomakis
+  </a>
+</div>
+    <div class="row-span-2 col-start-1 row-start-3">
       <img src="/images/galery/makis-1.webp" alt="Presentacion Langostinos" loading="lazy" width="640" height="480" />
     </div>
-    <div class="row-span-4 col-start-2 row-start-4 md:row-start-1">
-      <img src="/images/galery/vertical-1.webp" alt="Combo especial" loading="lazy" width="480" height="640" />
-    </div>
-    <div
-      class="md:row-span-2 row-span-2 md:col-start-3 row-start-2 md:row-start-1"
-    >
+    <div class="row-span-2 col-start-1 row-start-5 md:row-start-1 md:col-start-3">
       <img src="/images/galery/makis-2.webp" alt="Bento con makis" loading="lazy" width="640" height="480" />
     </div>
-    <div
-      class="row-span-2 col-start-1 md:col-start-3 row-start-4 md:row-start-3"
-    >
+    <div class="row-span-2 col-start-1 row-start-7 md:row-start-3 md:col-start-3">
       <img src="/images/galery/makis-3.webp" alt="Makis Furai" loading="lazy" width="640" height="480" />
     </div>
-    <div class="row-span-4 col-start-4 row-start-1 hidden md:block">
-      <img src="/images/galery/vertical-2.webp" alt="Makis Makizushi" loading="lazy" width="480" height="640" />
+    <div class="row-span-4 col-start-2 row-start-3 md:row-span-4 md:row-start-1">
+      <img src="/images/galery/vertical-1.webp" alt="Combo especial" loading="lazy" width="480" height="640" />
     </div>
-    <div class="row-span-2 md:col-start-5 md:row-start-1 row-start-6">
+    <div class="row-span-2 col-start-2 row-start-7 md:row-start-1 md:col-start-5">
       <img src="/images/galery/makis-4.webp" alt="Makis Temaki" loading="lazy" width="640" height="480" />
     </div>
     <div class="row-span-2 col-start-5 row-start-3 hidden md:block">
       <img src="/images/galery/makis-5.webp" alt="Makis Futomaki" loading="lazy" width="640" height="480" />
+    </div>
+    <div class="row-span-4 col-start-4 row-start-1 hidden md:block">
+      <img src="/images/galery/vertical-2.webp" alt="Makis Makizushi" loading="lazy" width="480" height="640" />
     </div>
   </div>
 </SectionContainer>
