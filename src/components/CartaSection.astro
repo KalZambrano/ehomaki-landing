@@ -1,0 +1,116 @@
+---
+interface Props {
+  cat: {
+    id: string;
+    label: string;
+    kanji: string;
+    items: {
+      nombre: string;
+      ingredientes: string;
+      img: string;
+    }[];
+  };
+}
+
+const { cat } = Astro.props;
+
+import CartaItem from "./cards/CartaItem.astro";
+---
+
+<section
+  class="cat-section relative overflow-hidden
+    border-b border-[#1b1812]
+    px-4 py-10
+    md:px-6 md:py-16"
+  data-cat={cat.id}
+>
+
+  {/* HEADER */}
+  <div
+    class="relative z-10 mb-10
+      flex flex-col gap-6
+      lg:mb-14
+      lg:flex-row
+      lg:items-end
+      lg:justify-between"
+  >
+    {/* Left */}
+    <div class="flex items-start gap-4 md:gap-6">
+      {/* Kanji */}
+      <div
+        class="hidden shrink-0 select-none
+          font-['Noto_Serif_JP']
+          text-[4.5rem] font-black leading-none
+          text-[#c89b3c]/10
+          sm:block
+          md:text-[6rem]
+          lg:text-[7rem]"
+      >
+        {cat.kanji}
+      </div>
+
+      {/* Title content */}
+      <div class="flex min-w-0 flex-col pt-1">
+        {/* Eyebrow */}
+        <div class="mb-3 flex items-center gap-3">
+          <div class="h-px w-8 bg-[#c89b3c]/50"></div>
+
+          <span
+            class="text-[10px] font-medium
+              uppercase tracking-[0.35em]
+              text-[#c89b3c]"
+          >
+            Categoría
+          </span>
+        </div>
+
+        {/* Title */}
+        <h2
+          class="wrap-break-words
+            font-['Bebas_Neue']
+            text-[2.4rem] leading-[0.95]
+            tracking-[0.04em]
+            text-[#f5f1ea]
+            sm:text-5xl
+            md:text-6xl
+            lg:text-7xl"
+        >
+          {cat.label}
+        </h2>
+      </div>
+    </div>
+
+    {/* Count */}
+    <div
+      class="inline-flex w-fit items-center gap-3
+        rounded-full
+        border border-[#2a2418]
+        bg-[#0f0d09]
+        px-4 py-2
+        lg:mb-2"
+    >
+      <div class="size-1.5 rounded-full bg-[#c89b3c]"></div>
+
+      <span
+        class="text-[10px] font-medium
+          uppercase tracking-[0.3em]
+          text-[#cfc5b6]
+          whitespace-nowrap"
+      >
+        {cat.items.length} variedades
+      </span>
+    </div>
+  </div>
+
+  {/* GRID */}
+  <div
+    class="relative z-10
+      grid grid-cols-2
+      gap-3
+      md:grid-cols-3
+      lg:grid-cols-4
+      xl:grid-cols-5"
+  >
+    {cat.items.map((item) => <CartaItem cat={cat} item={item} />)}
+  </div>
+</section>

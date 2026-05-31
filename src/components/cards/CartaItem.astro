@@ -1,0 +1,143 @@
+---
+interface Props {
+  cat: {
+    id: string;
+    label: string;
+    kanji: string;
+  };
+  item: {
+    nombre: string;
+    ingredientes: string;
+    img: string;
+    price?: number;
+    pieces?: number;
+  };
+}
+
+const { cat, item } = Astro.props;
+---
+
+<div
+  class="maki-card group relative overflow-hidden
+    rounded-[22px]
+    border border-[#2a2318]
+    bg-[#0d0b08]
+    transition-colors duration-300
+    hover:border-[#c89b3c]/40
+    hover:bg-[#15110c]"
+  data-name={item.nombre.toLowerCase()}
+  data-desc={item.ingredientes.toLowerCase()}
+  data-cat={cat.id}
+>
+  {/* Glow hover */}
+  <div
+    class="pointer-events-none
+      absolute inset-0 opacity-0
+      transition-opacity duration-500
+      group-hover:opacity-100"
+  >
+    <div
+      class="absolute inset-0 rounded-[22px]
+        shadow-[0_0_35px_rgba(200,155,60,0.10)]"
+    >
+    </div>
+  </div>
+
+  {/* Image */}
+  <div class="relative aspect-4/3 overflow-hidden">
+    <img
+      src={item.img}
+      alt={item.nombre}
+      loading="lazy"
+      decoding="async"
+      class="h-full w-full object-cover
+        saturate-[.8]
+        transition-transform duration-700 ease-out
+        group-hover:scale-110
+        group-hover:saturate-100"
+    />
+
+    {/* Overlay */}
+    <div
+      class="absolute inset-0
+        bg-linear-to-t
+        from-black/80
+        via-black/10
+        to-transparent"
+    >
+    </div>
+
+    {/* Title inside image */}
+    <div class="absolute bottom-0 left-0 w-full p-4">
+      <h3
+        class="font-['Noto_Serif_JP']
+          text-lg font-bold
+          text-white
+          drop-shadow-lg
+          md:text-xl"
+      >
+        {item.nombre}
+      </h3>
+    </div>
+
+    {
+      item.pieces && (
+        <span
+          class="absolute top-3 right-3
+            rounded-lg
+            bg-[#c89b3c]/90
+            px-2.5 py-1
+            text-[10px]
+            font-semibold
+            uppercase tracking-[0.25em]
+            text-[#0d0b08]
+            shadow-lg
+            backdrop-blur-sm"
+        >
+          {item.pieces} pz
+        </span>
+      )
+    }
+  </div>
+
+  {/* Bottom preview */}
+  <div class="p-4 block md:hidden">
+    <p
+      class="line-clamp-2
+        text-sm leading-relaxed
+        text-[#d1c7b8]"
+    >
+      {item.ingredientes}
+    </p>
+  </div>
+
+  {/* Tooltip */}
+  <div
+    class="pointer-events-none
+      absolute bottom-0 left-0 right-0
+      translate-y-full
+      border-t border-[#c89b3c]/40
+      bg-[rgba(10,8,5,0.98)]
+      p-4
+      transition-transform duration-300 ease-out
+      group-hover:translate-y-0"
+    role="tooltip"
+  >
+    <div
+      class="mb-2
+        text-[10px]
+        uppercase
+        tracking-[0.3em]
+        text-[#c89b3c]"
+    >
+      Ingredientes
+    </div>
+
+    <p
+      class="text-sm leading-relaxed text-[#f5f1ea] line-clamp-2"
+      title={item.ingredientes}
+    >
+      {item.ingredientes}
+    </p>
+  </div>
+</div>
