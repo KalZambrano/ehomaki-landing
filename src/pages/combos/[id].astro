@@ -4,6 +4,8 @@ import { COMBOS } from "@/const/combos";
 import { CATEGORIAS } from "@/const/carta";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
+import { SelectVariety } from "@/components/SelectVariety";
+import { AddButton } from "@/components/ui/add-button";
 
 export const getStaticPaths = (() => {
   return COMBOS.map((combo) => ({
@@ -14,161 +16,114 @@ export const getStaticPaths = (() => {
 
 const { combo } = Astro.props;
 
-// Get all sushi varieties (excluding complementos)
-const allVarieties = CATEGORIAS
-  .filter(cat => cat.id !== 'complementos')
-  .flatMap(cat => cat.items.map(item => ({
+const allVarieties = CATEGORIAS.filter(
+  (cat) => cat.id !== "complementos",
+).flatMap((cat) =>
+  cat.items.map((item) => ({
     name: item.nombre,
     ingredients: item.ingredientes,
-    category: cat.label
-  })));
+    category: cat.label,
+  })),
+);
 ---
 
 <Layout>
-    <Header />
-  <section class="max-w-7xl mx-auto py-20">
-    <div class="overflow-hidden rounded-3xl border border-[#c89b3c]/20">
-      <img src={combo.image} alt={combo.description} class="w-full object-cover aspect-16/6" />
-    </div>
+  <Header />
 
-    <div class="mt-10">
-      <h1 class="font-['Noto_Serif_JP'] text-5xl md:text-6xl text-[#f5f1ea]">
-        {combo.name}
-      </h1>
-
-      <p class="mt-4 max-w-3xl text-lg text-[#cfc5b6]">
-        {combo.shortDescription}
-      </p>
-
-      <div class="mt-8 grid sm:grid-cols-2 gap-3">
-        {combo.includes.map(item => (
-          <div class="flex items-center gap-3 rounded-xl border border-[#c89b3c]/10 bg-[#0c0a07] px-4 py-3">
-            <span class="text-[#c89b3c]">✓</span>
-            {item}
-          </div>
-        ))}
-      </div>
-
-      <div class="mt-10 flex items-end gap-2">
-        <span class="font-['Bebas_Neue'] text-7xl leading-none text-[#c89b3c]">
-          {combo.price}
-        </span>
-        <span class="mb-2 text-xl text-[#c89b3c]/70">soles</span>
-      </div>
-
-      {combo.canChooseVarieties && (
-        <div id="variety-selector" class="mt-10">
-          <h2 class="text-2xl font-bold mb-4 text-[#f5f1ea]">
-            Elige tus variedades ({combo.varietiesCount} {combo.varietiesCount === 1 ? 'variedad' : 'variedades'})
-          </h2>
-          <p class="text-[#cfc5b6]/70 mb-6">
-            Selecciona {combo.varietiesCount} {combo.varietiesCount === 1 ? 'variedad' : 'variedades'} de sushi
-          </p>
-
-          <div class="mb-8">
-            <div class="flex justify-between text-sm mb-2 text-[#cfc5b6]/70">
-              <span>Variedades seleccionadas</span>
-              <span id="count-display">0 / {combo.varietiesCount}</span>
-            </div>
-            <div class="h-2 rounded-full bg-[#1b1812] overflow-hidden">
-              <div id="progress" class="h-full w-0 bg-[#c89b3c] transition-all"></div>
-            </div>
-          </div>
-
-          <div id="varieties-list" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {allVarieties.map((variety) => (
-              <div class="variety-item group rounded-2xl border border-[#c89b3c]/10 bg-[#0c0a07] p-5 transition-all duration-300 hover:border-[#c89b3c]/30" data-variety={variety.name}>
-                <div class="flex-1">
-                  <div class="font-semibold text-[#f5f1ea]">{variety.name}</div>
-                  <div class="mt-2 text-sm text-[#cfc5b6]/70">{variety.ingredients}</div>
-                </div>
-                <div class="mt-4 flex items-center justify-between">
-                  <button class="decrement-btn size-10 rounded-xl border border-[#c89b3c]/20 hover:border-[#c89b3c] transition disabled:opacity-30 disabled:cursor-not-allowed" disabled>
-                    −
-                  </button>
-                  <span class="quantity text-xl font-bold text-[#c89b3c]">0</span>
-                  <button class="increment-btn size-10 rounded-xl border border-[#c89b3c]/20 hover:border-[#c89b3c] transition disabled:opacity-30 disabled:cursor-not-allowed">
-                    +
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <button id="add-to-cart" class="sticky bottom-6 mt-8 w-full h-16 rounded-2xl bg-[#c89b3c] text-black font-bold uppercase tracking-[0.15em] disabled:bg-[#1b1812] disabled:text-zinc-500 transition-all" disabled>
-            Añadir al carrito
-          </button>
+  <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
+    <div
+      class="grid gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(360px,0.65fr)] lg:items-stretch"
+    >
+      <div
+        class="group relative min-h-80 overflow-hidden rounded-[28px] border border-[#c89b3c]/20 bg-[#0c0a07] md:min-h-115"
+      >
+        <img
+          src={combo.image}
+          alt={combo.description}
+          class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        <div
+          class="absolute inset-0 bg-linear-to-t from-[#090806] via-[#090806]/20 to-transparent"
+        >
         </div>
-      )}
+        <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+          <span
+            class="inline-flex rounded-full border border-[#c89b3c]/30 bg-black/45 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[#c89b3c] backdrop-blur"
+          >
+            {combo.portion ? `${combo.portion} piezas` : combo.type}
+          </span>
+          <h1
+            class="mt-4 font-['Noto_Serif_JP'] text-4xl font-bold leading-tight text-[#f5f1ea] md:text-6xl"
+            transition:name={`combo-${combo.slug}`}
+          >
+            {combo.name}
+          </h1>
+          <p
+            class="mt-3 max-w-2xl text-base leading-relaxed text-[#e5d8c4] md:text-lg"
+            transition:name={`combo-${combo.slug}-description`}
+          >
+            {combo.shortDescription}
+          </p>
+        </div>
+      </div>
 
-      {!combo.canChooseVarieties && (
-        <button class="mt-10 w-full py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold text-lg rounded-xl transition-colors">
-          Añadir al Carrito
-        </button>
-      )}
+      <aside
+        class="flex flex-col justify-between rounded-[28px] border border-[#c89b3c]/15 bg-[#0c0a07] p-6 md:p-7"
+      >
+        <div>
+          <p
+            class="text-xs font-semibold uppercase tracking-[0.28em] text-[#c89b3c]"
+          >
+            Incluye
+          </p>
+          <div class="mt-5 grid gap-3">
+            {
+              combo.includes.map((item) => (
+                <div class="flex items-center gap-3 rounded-2xl border border-[#c89b3c]/10 bg-[#15110c] px-4 py-3 text-sm leading-snug text-[#f5f1ea]">
+                  <span class="grid size-6 shrink-0 place-items-center rounded-full bg-[#c89b3c]/15 text-sm font-bold text-[#c89b3c]">
+                    ✓
+                  </span>
+                  <span>{item}</span>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div
+          class="mt-8 rounded-3xl border border-[#c89b3c]/15 bg-[#090806] p-5"
+        >
+          <p
+            class="text-xs font-semibold uppercase tracking-[0.24em] text-[#cfc5b6]/70"
+          >
+            Precio
+          </p>
+          <div class="mt-2 flex items-end gap-2">
+            <span
+              class="font-['Bebas_Neue'] text-7xl leading-none text-[#c89b3c] md:text-8xl"
+              transition:name={`combo-${combo.slug}-price`}
+            >
+              S/ {combo.price}
+            </span>
+          </div>
+          <p class="mt-2 text-sm text-[#cfc5b6]/70">Total del combo</p>
+        </div>
+      </aside>
     </div>
+
+    {
+      combo.canChooseVarieties && (
+        <SelectVariety
+          client:load
+          varietiesCount={combo.varietiesCount || 0}
+          allVarieties={allVarieties}
+          name={combo.name}
+        />
+      )
+    }
+
+    {!combo.canChooseVarieties && (
+      <AddButton client:load combo={{ name: combo.name }} />
+    )}
   </section>
-
-  {combo.canChooseVarieties && (
-    <script define:vars={{ maxVarieties: combo.varietiesCount }}>
-      const varietiesList = document.getElementById('varieties-list');
-      const countDisplay = document.getElementById('count-display');
-      const progress = document.getElementById('progress');
-      const addToCartBtn = document.getElementById('add-to-cart');
-
-      let selectedVarieties = new Map();
-      let totalCount = 0;
-
-      function updateUI() {
-        countDisplay.textContent = `${totalCount} / ${maxVarieties}`;
-        addToCartBtn.disabled = totalCount !== maxVarieties;
-        progress.style.width = `${(totalCount / maxVarieties) * 100}%`;
-
-        const varietyItems = varietiesList.querySelectorAll('.variety-item');
-        varietyItems.forEach(item => {
-          const varietyName = item.dataset.variety;
-          const quantity = selectedVarieties.get(varietyName) || 0;
-          const decrementBtn = item.querySelector('.decrement-btn');
-          const incrementBtn = item.querySelector('.increment-btn');
-          const quantitySpan = item.querySelector('.quantity');
-
-          quantitySpan.textContent = quantity;
-          decrementBtn.disabled = quantity === 0;
-          incrementBtn.disabled = totalCount >= maxVarieties;
-        });
-      }
-
-      varietiesList.addEventListener('click', (e) => {
-        const varietyItem = e.target.closest('.variety-item');
-        if (!varietyItem) return;
-
-        const varietyName = varietyItem.dataset.variety;
-        const isIncrement = e.target.classList.contains('increment-btn');
-        const isDecrement = e.target.classList.contains('decrement-btn');
-
-        if (isIncrement && totalCount < maxVarieties) {
-          selectedVarieties.set(varietyName, (selectedVarieties.get(varietyName) || 0) + 1);
-          totalCount++;
-        } else if (isDecrement) {
-          const currentQuantity = selectedVarieties.get(varietyName) || 0;
-          if (currentQuantity > 0) {
-            selectedVarieties.set(varietyName, currentQuantity - 1);
-            totalCount--;
-          }
-        }
-
-        updateUI();
-      });
-
-      addToCartBtn.addEventListener('click', () => {
-        const selected = Array.from(selectedVarieties.entries())
-          .filter(([_, quantity]) => quantity > 0)
-          .map(([name, quantity]) => ({ name, quantity }));
-
-        console.log('Añadiendo al carrito:', selected);
-        alert('¡Añadido al carrito!\n\nVariedades seleccionadas:\n' + 
-          selected.map(v => `- ${v.name} (x${v.quantity})`).join('\n'));
-      });
-    </script>
-  )}
 </Layout>
