@@ -6,6 +6,7 @@ import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import { SelectVariety } from "@/components/SelectVariety";
 import { AddButton } from "@/components/ui/add-button";
+import ArrowLeft from "@/assets/icons/arrow-left.svg";
 
 export const getStaticPaths = (() => {
   return COMBOS.map((combo) => ({
@@ -30,7 +31,25 @@ const allVarieties = CATEGORIAS.filter(
 <Layout>
   <Header />
 
-  <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
+  <section class="mx-auto max-w-7xl px-6 py-20 sm:px-8 md:py-24 lg:px-8">
+    <a
+      href="/combos"
+      class="inline-flex
+    items-center
+    gap-2
+    mb-8
+    text-sm
+    uppercase
+    tracking-[0.15em]
+    text-[#c89b3c]
+    transition-all
+    duration-300
+    hover:text-[#f5f1ea]
+    hover:-translate-x-1"
+    >
+      <ArrowLeft class="size-4" />
+      Volver a Combos
+    </a>
     <div
       class="grid gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(360px,0.65fr)] lg:items-stretch"
     >
@@ -41,6 +60,7 @@ const allVarieties = CATEGORIAS.filter(
           src={combo.image}
           alt={combo.description}
           class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          transition:name={`combo-${combo.slug}-image`}
         />
         <div
           class="absolute inset-0 bg-linear-to-t from-[#090806] via-[#090806]/20 to-transparent"
@@ -122,8 +142,10 @@ const allVarieties = CATEGORIAS.filter(
       )
     }
 
-    {!combo.canChooseVarieties && (
-      <AddButton client:load combo={{ name: combo.name }} />
-    )}
+    {
+      !combo.canChooseVarieties && (
+        <AddButton client:load combo={{ name: combo.name }} />
+      )
+    }
   </section>
 </Layout>

@@ -50,27 +50,27 @@ const totalItems = CATEGORIAS.reduce((acc, cat) => acc + cat.items.length, 0);
     <!-- Hero de la carta -->
     <div class="carta-hero">
       <div class="carta-hero-inner">
-        <div class="eyebrow">
+        <div class="eyebrow animate-fade-in-down delay-100">
           <span class="eyebrow-line"></span>
           <span class="eyebrow-text">Carta completa</span>
           <span class="eyebrow-line"></span>
         </div>
         <h1 class="carta-title">
-          <span class="title-jp">m.a.k.i.s</span>
-          <span class="title-main">Nuestra Carta</span>
+          <span class="title-jp animate-fade-in-up delay-200">m.a.k.i.s</span>
+          <span class="title-main animate-fade-in-up delay-300">Nuestra Carta</span>
         </h1>
-        <p class="carta-subtitle">
+        <p class="carta-subtitle animate-fade-in-up delay-400">
           {totalItems} variedades · Ingredientes frescos diarios · Cocina Nikkei
         </p>
         <div class="my-12 flex flex-col items-center gap-8">
           <!-- PRICING -->
           <div class="price-cards-row">
-            <div class="price-card featured">
+            <div class="price-card featured animate-fade-in-right delay-600">
               <span class="price-label">10 piezas</span>
               <span class="price-value">S/ 25</span>
               <span class="price-desc">La experiencia completa</span>
             </div>
-            <div class="price-card">
+            <div class="price-card animate-fade-in-left delay-600">
               <span class="price-label">6 piezas</span>
               <span class="price-value">S/ 18</span>
               <span class="price-desc">Ideal para probar</span>
@@ -82,7 +82,8 @@ const totalItems = CATEGORIAS.reduce((acc, cat) => acc + cat.items.length, 0);
             href="https://wa.me/51941442899"
             target="_blank"
             rel="noopener noreferrer"
-            class="group inline-flex items-center justify-center gap-3 rounded-full border border-(--gold) bg-linear-to-r from-[rgba(212,175,55,0.12)] to-[rgba(212,175,55,0.05)] px-8 py-5 text-[0.85rem] font-semibold uppercase tracking-[0.18em] text-(--gold) shadow-[0_10px_30px_rgba(212,175,55,0.15)] transition-all duration-300 hover:-translate-y-1 hover:bg-(--gold) hover:text-black hover:shadow-[0_20px_45px_rgba(212,175,55,0.35)]"
+            class="group inline-flex items-center justify-center gap-3 rounded-full border border-(--gold) bg-linear-to-r from-[rgba(212,175,55,0.12)] to-[rgba(212,175,55,0.05)] px-8 py-5 text-[0.85rem] font-semibold uppercase tracking-[0.18em] text-(--gold) shadow-[0_10px_30px_rgba(212,175,55,0.15)] 
+            transition-all duration-300 hover:-translate-y-1 hover:bg-(--gold) hover:text-black hover:shadow-[0_20px_45px_rgba(212,175,55,0.35)] animate-fade-in-up delay-500"
           >
             <WhatsAppIcon
               class="size-5 transition-transform duration-300 group-hover:scale-110"

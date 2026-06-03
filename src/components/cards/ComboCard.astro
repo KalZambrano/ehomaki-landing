@@ -56,6 +56,7 @@ const { id, name, shortName, price, pieces, description, slug } = Astro.props;
           font-['Noto_Serif_JP']
           text-xl font-bold
           text-[#f5f1ea]"
+        transition:name={`combo-${slug}`}
       >
         {shortName}
       </h3>
@@ -76,6 +77,7 @@ const { id, name, shortName, price, pieces, description, slug } = Astro.props;
         class="mx-auto max-w-65
           text-sm leading-7
           text-[#cfc5b6]"
+        transition:name={`combo-${slug}-description`}
       >
         {description}
       </p>
@@ -88,6 +90,7 @@ const { id, name, shortName, price, pieces, description, slug } = Astro.props;
           font-['Bebas_Neue']
           text-5xl leading-none
           text-[#c89b3c]"
+        transition:name={`combo-${slug}-price`}
       >
         S/ {price}
       </p>
