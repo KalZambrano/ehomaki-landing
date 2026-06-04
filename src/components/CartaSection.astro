@@ -110,6 +110,15 @@ const { cat } = Astro.props;
       lg:grid-cols-3
       xl:grid-cols-5"
   >
-    {cat.items.map((item) => <CartaItem client:load cat={cat} item={item} />)}
+    {
+      cat.items.map((item) => (
+        <CartaItem
+          client:load
+          cat={cat}
+          item={item}
+          isComplement={cat.id === "complementos"}
+        />
+      ))
+    }
   </div>
 </section>

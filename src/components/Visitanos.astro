@@ -5,6 +5,7 @@ import CarIcon from "@/assets/icons/car.svg";
 import BusIcon from "@/assets/icons/bus.svg";
 import LocationIcon from "@/assets/icons/map-marker.svg";
 import PhoneIcon from "@/assets/icons/phone-call.svg";
+import { ClockIcon } from "lucide-react";
 ---
 
 <SectionContainer
@@ -15,23 +16,34 @@ import PhoneIcon from "@/assets/icons/phone-call.svg";
   <div
     class="flex flex-col md:flex-row justify-center items-center md:justify-between gap-3"
   >
-    <address class="flex flex-col items-center md:items-start gap-2 not-italic">
-      <span class="flex gap-1.5 items-center"
-        ><LocationIcon class="size-6" />Av. Alameda Los Cedros 366, Chorrillos</span
+    <address
+      class="
+      flex flex-col items-center md:items-start gap-3 not-italic
+      [&>a]:w-fit
+      "
+    >
+      <a
+        href="#"
+        class="flex items-center gap-2 rounded-full border border-(--gold)/20 bg-(--gold)/10 px-4 py-2"
       >
-      <span class="flex gap-1.5 items-center"
-        ><PhoneIcon class="size-6" />
-        <a
-          class="font-medium"
-          href="https://wa.me/51941442899"
-          target="_blank"
-          rel="noopener noreferrer">941 442 899</a
-        >
-      </span>
+        <LocationIcon class="size-5 text-(--gold)" />
+        <span>Av. Alameda Los Cedros 366</span>
+      </a>
+
+      <a
+        href="https://wa.me/51941442899"
+        class="flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-4 py-2"
+      >
+        <PhoneIcon class="size-5 text-green-500" />
+        <span>+51 941 442 899</span>
+      </a>
     </address>
     <section class="text-center md:text-right">
-      <h2 class="font-medium tracking-wide text-(--gold) mb-2">
-        Horarios de Atención:
+      <h2
+        class="mb-3 flex justify-center md:justify-end items-center gap-1.5 text-(--gold)"
+      >
+        <ClockIcon className="size-4.5" />
+        Horarios de Atención
       </h2>
 
       <ul
@@ -58,14 +70,6 @@ import PhoneIcon from "@/assets/icons/phone-call.svg";
       class="relative h-70 md:h-157.5 min-w-75 flex-1 overflow-hidden rounded-[1.5rem] bg-black"
     >
       <EhomakiMap client:idle />
-      <!-- <LeafletMap
-        latitude={-12.20456994618187}
-        longitude={-77.01358787855044}
-        zoom={16}
-        tileLayer="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-        attribution=`<a class="mr-5" href="http://www.openstreetmap.org/">OpenStreetMap</a>`
-        geoJSON={[{ data: ehomakisGeoJSON, color: "green" }]}
-      /> -->
     </figure>
     <section
       class="flex w-full shrink-0 flex-col gap-y-8 overflow-hidden md:w-93.75 lg:w-137.5"

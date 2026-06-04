@@ -137,8 +137,10 @@ const totalItems = CATEGORIAS.reduce((acc, cat) => acc + cat.items.length, 0);
       </div>
 
       <!-- CARTA -->
-      <div class="mx-auto max-w-350 px-8 pb-16 md:px-0 md:pb-12">
-        {CATEGORIAS.map((cat) => <CartaSection cat={cat} />)}
+      <div class="mx-auto max-w-350 px-4 pb-16 md:px-0 md:pb-12">
+        {CATEGORIAS.map((cat) => (
+          <CartaSection cat={cat} />
+        ))}
 
         <!-- Estado vacío -->
         <div id="emptyState" class="py-24 text-center" style="display:none">

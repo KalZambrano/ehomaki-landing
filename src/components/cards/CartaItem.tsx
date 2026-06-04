@@ -13,9 +13,10 @@ interface CartaItemProps {
     price?: number;
     pieces?: number;
   };
+  isComplement: boolean;
 }
 
-export function CartaItem({ cat, item }: CartaItemProps) {
+export function CartaItem({ cat, item, isComplement }: CartaItemProps) {
   return (
     <div
       className="maki-card group relative overflow-hidden
@@ -86,96 +87,133 @@ export function CartaItem({ cat, item }: CartaItemProps) {
 
       {/* Bottom preview */}
       <footer className="flex flex-col gap-4 p-4">
-        <p className="line-clamp-2 text-sm leading-relaxed text-[#d1c7b8]">
+        <p className="h-10 line-clamp-2 text-sm leading-relaxed text-[#d1c7b8]">
           {item.ingredientes}
         </p>
+        {!isComplement && (
+          <div className="flex flex-col gap-2 lg:hidden">
+            <button
+              onClick={() => handleAddToCart(`${item.nombre} - 10 piezas`)}
+              className="group flex items-center justify-between rounded-xl bg-[#c89b3c] px-4 py-3 text-black"
+            >
+              <div className="text-left">
+                <p className="font-semibold">10 piezas</p>
+                <p className="text-xs opacity-75">Agregar al carrito</p>
+              </div>
 
-        <div className="flex flex-col gap-2 lg:hidden">
-          <button
-            onClick={() => handleAddToCart(`${item.nombre} - 10 piezas`)}
-            className="group flex items-center justify-between rounded-xl bg-[#c89b3c] px-4 py-3 text-black"
-          >
-            <div className="text-left">
-              <p className="font-semibold">10 piezas</p>
-              <p className="text-xs opacity-75">Agregar al carrito</p>
-            </div>
+              <div className="flex items-center gap-3">
+                <span className="font-bold">S/.25</span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-black/10 text-lg font-bold">
+                  +
+                </span>
+              </div>
+            </button>
 
-            <div className="flex items-center gap-3">
-              <span className="font-bold">S/.25</span>
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-black/10 text-lg font-bold">
-                +
-              </span>
-            </div>
-          </button>
+            <button
+              onClick={() => handleAddToCart(`${item.nombre} - 6 piezas`)}
+              className="group flex items-center justify-between rounded-xl bg-[#1a1a1a] px-4 py-3 text-[#f3e7d3]"
+            >
+              <div className="text-left">
+                <p className="font-semibold">6 piezas</p>
+                <p className="text-xs opacity-75">Agregar al carrito</p>
+              </div>
 
-          <button
-            onClick={() => handleAddToCart(`${item.nombre} - 6 piezas`)}
-            className="group flex items-center justify-between rounded-xl bg-[#1a1a1a] px-4 py-3 text-[#f3e7d3]"
-          >
-            <div className="text-left">
-              <p className="font-semibold">6 piezas</p>
-              <p className="text-xs opacity-75">Agregar al carrito</p>
-            </div>
+              <div className="flex items-center gap-3">
+                <span className="font-bold text-[#c89b3c]">S/.18</span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#c89b3c]/10 text-lg font-bold text-[#c89b3c]">
+                  +
+                </span>
+              </div>
+            </button>
+          </div>
+        )}
+        {isComplement && (
+          <div className="flex flex-col gap-2 lg:hidden">
+            <button
+              onClick={() => handleAddToCart(item.nombre)}
+              className="group flex items-center justify-between rounded-xl bg-[#c89b3c] px-4 py-3 text-black"
+            >
+              <div className="text-left">
+                <p className="font-semibold">{item.nombre}</p>
+                <p className="text-xs opacity-75">Agregar al carrito</p>
+              </div>
 
-            <div className="flex items-center gap-3">
-              <span className="font-bold text-[#c89b3c]">S/.18</span>
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#c89b3c]/10 text-lg font-bold text-[#c89b3c]">
-                +
-              </span>
-            </div>
-          </button>
-        </div>
+              <div className="flex items-center gap-3">
+                <span className="font-bold">
+                  {item.price ? `S/.${item.price}` : "Consultar"}
+                </span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-black/10 text-lg font-bold">
+                  +
+                </span>
+              </div>
+            </button>
+          </div>
+        )}
       </footer>
 
       {/* Acciones hover */}
-      <div
-        className="hidden lg:block translate-y-full absolute inset-x-0 bottom-0 bg-linear-to-t from-[#0d0b08] to-[#0d0b08]/95 p-4
-  transition-transform duration-300
-  group-hover:translate-y-0"
-        data-actions
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      {!isComplement && (
+        <div
+          className="hidden lg:block translate-y-full absolute inset-x-0 bottom-0 bg-linear-to-t from-[#0d0b08] to-[#0d0b08]/95 p-4
+                  transition-transform duration-300 group-hover:translate-y-0"
+          data-actions
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <button
+              className="rounded-xl border border-[#c89b3c]/30 bg-[#18130d] px-3 py-3 text-left
+            transition-all hover:border-[#c89b3c] hover:bg-[#20180f]"
+              onClick={() => handleAddToCart(`${item.nombre} - 10 piezas`)}
+            >
+              <div className="text-[11px] uppercase tracking-widest text-[#c89b3c]">
+                Ordenar
+              </div>
+
+              <div className="mt-1 text-sm font-semibold text-white">
+                10 piezas
+              </div>
+
+              <div className="text-lg font-bold text-[#c89b3c]">S/ 25</div>
+            </button>
+
+            <button
+              className="rounded-xl border border-[#c89b3c]/30 bg-[#18130d] px-3 py-3 text-left
+            transition-all hover:border-[#c89b3c] hover:bg-[#20180f]"
+              onClick={() => handleAddToCart(`${item.nombre} - 6 piezas`)}
+            >
+              <div className="text-[11px] uppercase tracking-widest text-[#c89b3c]">
+                Ordenar
+              </div>
+              <div className="mt-1 text-sm font-semibold text-white">
+                6 piezas
+              </div>
+              <div className="text-lg font-bold text-[#c89b3c]">S/ 18</div>
+            </button>
+          </div>
+        </div>
+      )}
+      {isComplement && (
+        <div
+          className="hidden lg:block translate-y-full absolute inset-x-0 bottom-0 bg-linear-to-t from-[#0d0b08] to-[#0d0b08]/95 p-4
+                  transition-transform duration-300 group-hover:translate-y-0"
+          data-actions
+        >
           <button
-            className="rounded-xl border border-[#c89b3c]/30
-        bg-[#18130d]
-        px-3 py-3
-        text-left
-        transition-all
-        hover:border-[#c89b3c]
-        hover:bg-[#20180f]"
-            onClick={() => handleAddToCart(`${item.nombre} - 10 piezas`)}
+            className="rounded-xl border border-[#c89b3c]/30 bg-[#18130d] px-3 py-3 text-left
+            transition-all hover:border-[#c89b3c] hover:bg-[#20180f]"
+            onClick={() => handleAddToCart(item.nombre)}
           >
             <div className="text-[11px] uppercase tracking-widest text-[#c89b3c]">
               Ordenar
             </div>
-
             <div className="mt-1 text-sm font-semibold text-white">
-              10 piezas
+              {item.nombre}
             </div>
-
-            <div className="text-lg font-bold text-[#c89b3c]">S/ 25</div>
-          </button>
-
-          <button
-            className="rounded-xl border border-[#c89b3c]/30
-        bg-[#18130d]
-        px-3 py-3
-        text-left
-        transition-all
-        hover:border-[#c89b3c]
-        hover:bg-[#20180f]"
-            onClick={() => handleAddToCart(`${item.nombre} - 6 piezas`)}
-          >
-            <div className="text-[11px] uppercase tracking-widest text-[#c89b3c]">
-              Ordenar
+            <div className="text-lg font-bold text-[#c89b3c]">
+              {item.price ? `S/.${item.price}` : "Consultar"}
             </div>
-            <div className="mt-1 text-sm font-semibold text-white">
-              6 piezas
-            </div>
-            <div className="text-lg font-bold text-[#c89b3c]">S/ 18</div>
           </button>
         </div>
-      </div>
+      )}
     </div>
   );
 }
