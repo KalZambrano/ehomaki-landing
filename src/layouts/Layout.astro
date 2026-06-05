@@ -6,7 +6,7 @@ import "@fontsource/dm-sans";
 import "@fontsource/noto-serif-jp";
 
 import Footer from "@/components/Footer.astro"
-import CartSection from "@/components/CartSection.astro"
+import CartSection from "@/components/CartSection";
 import { ClientRouter } from "astro:transitions"
 import { Toast } from "@/components/Toast";
 ---
@@ -58,7 +58,7 @@ import { Toast } from "@/components/Toast";
       <slot />
     </main>
   </body>
-  <CartSection />
+  <CartSection client:load />
   <Footer />
   <Toast client:idle />
 </html>

@@ -4,16 +4,17 @@ interface Props {
   name: string;
   shortName: string;
   price: number;
-  pieces: string;
   description: string;
   slug: string;
+  img?: string;
 }
 
-const { id, name, shortName, price, pieces, description, slug } = Astro.props;
+const { id, name, shortName, price, description, slug, img } =
+  Astro.props;
 ---
 
 <article
-  class="group relative overflow-hidden flex flex-col h-85
+  class="combo-card group relative overflow-hidden flex flex-col h-85
     border border-[#1b1812]
     bg-[#090806]
     p-6 md:p-8
@@ -23,6 +24,7 @@ const { id, name, shortName, price, pieces, description, slug } = Astro.props;
   data-id={id}
   data-name={name}
   data-price={price}
+  data-img={img || ""}
 >
   {/* Glow */}
   <div
