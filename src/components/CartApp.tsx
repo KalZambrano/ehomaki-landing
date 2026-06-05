@@ -12,7 +12,7 @@ export type CartItemType = {
 
 const formatCurrency = (value: number) => `S/ ${value.toFixed(2)}`;
 
-export default function CartApp() {
+export default function CartApp({ handleCloseCart }: { handleCloseCart: any }) {
   const [cart, setCart] = useState<CartItemType[]>([]);
   // const [toastMessage, setToastMessage] = useState("");
   // const [toastVisible, setToastVisible] = useState(false);
@@ -79,61 +79,14 @@ export default function CartApp() {
     setCart((prevCart) => prevCart.filter((item) => item.id !== id));
   };
 
-  const openCart = () => {
-    const cartDrawer = document.getElementById("cartDrawer");
-    const cartOverlay = document.getElementById("cartOverlay");
-    cartDrawer?.classList.add("open");
-    cartOverlay?.classList.add("open");
-    document.body.style.overflow = "hidden";
-  };
-
   useEffect(() => {
-    const menuGrid = document.getElementById("menuGrid");
-    const handleMenuClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      const button = target.closest(".add-btn") as HTMLElement | null;
-      if (!button) return;
-      const card = button.closest(".menu-card") as HTMLElement | null;
-      if (!card) return;
-
-      const id = String(card.dataset.id ?? "");
-      const name = String(card.dataset.name ?? "");
-      const price = Number(card.dataset.price ?? 0);
-      const img = String(card.dataset.img ?? "");
-      if (!id || !name) return;
-
-      addToCart(id, name, price, img, button);
-    };
-
-    if (menuGrid) {
-      menuGrid.addEventListener("click", handleMenuClick);
-    }
-
-    const comboButtons = Array.from(
-      document.querySelectorAll<HTMLButtonElement>(".combo-add"),
-    );
-
-    const handleComboClick = (event: MouseEvent) => {
-      const button = event.currentTarget as HTMLElement;
-      const card = button.closest(".combo-card") as HTMLElement | null;
-      if (!card) return;
-
-      const id = String(card.dataset.id ?? "");
-      const name = String(card.dataset.name ?? "");
-      const price = Number(card.dataset.price ?? 0);
-      const img = String(card.dataset.img ?? "");
-      if (!id || !name) return;
-
-      addToCart(id, name, price, img);
-      openCart();
-    };
-
-    comboButtons.forEach((button) => {
-      button.addEventListener("click", handleComboClick);
-    });
-
     const handleAddToCartEvent = (event: Event) => {
-      const customEvent = event as CustomEvent<{ id: string; name: string; price: number; img: string }>;
+      const customEvent = event as CustomEvent<{
+        id: string;
+        name: string;
+        price: number;
+        img: string;
+      }>;
       const { id, name, price, img } = customEvent.detail;
       addToCart(id, name, price, img);
     };
@@ -141,12 +94,6 @@ export default function CartApp() {
     window.addEventListener("addToCart", handleAddToCartEvent);
 
     return () => {
-      if (menuGrid) {
-        menuGrid.removeEventListener("click", handleMenuClick);
-      }
-      comboButtons.forEach((button) => {
-        button.removeEventListener("click", handleComboClick);
-      });
       window.removeEventListener("addToCart", handleAddToCartEvent);
     };
   }, []);
@@ -162,6 +109,7 @@ export default function CartApp() {
           className="cart-close"
           id="closeCart"
           aria-label="Cerrar carrito"
+          onClick={handleCloseCart}
         >
           ✕
         </button>

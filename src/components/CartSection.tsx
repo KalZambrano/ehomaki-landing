@@ -11,6 +11,10 @@ export default function CartSection({
 }: CartSectionProps) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleCloseCart = () => {
+    setIsOpen(false)
+  } 
+
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
 
@@ -58,7 +62,7 @@ export default function CartSection({
           }
         `}
       >
-        <CartApp />
+        <CartApp handleCloseCart={handleCloseCart}/>
       </aside>
     </>
   );
