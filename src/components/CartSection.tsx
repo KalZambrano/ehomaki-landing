@@ -1,34 +1,31 @@
 import CartButton from "./ui/cart-button";
 import CartApp from "./CartApp";
 import { useEffect, useState } from "react";
+import { cartStore } from "../lib/cartStore";
 
-interface CartSectionProps {
-  cartCount?: number;
-}
-
-export default function CartSection({
-  cartCount = 0,
-}: CartSectionProps) {
+export default function CartSection() {
   const [isOpen, setIsOpen] = useState(false);
-
-  const handleCloseCart = () => {
-    setIsOpen(false)
-  } 
+  const [cartCount, setCartCount] = useState(0);
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
+    console.log("cartStore", cartStore.get().length);
+    // carga inicial desde localStorage
+    const getCount = () => cartStore.get().length;
+    setCartCount(getCount());
 
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
+    // se actualiza cada vez que CartApp modifica el carrito
+    const onCartUpdated = () => setCartCount(getCount());
+    window.addEventListener("cartUpdated", onCartUpdated);
+    return () => window.removeEventListener("cartUpdated", onCartUpdated);
+  }, []);
+
+  const handleCloseCart = () => {
+    setIsOpen(false);
+  };
 
   return (
     <>
-      <CartButton
-        count={cartCount}
-        onOpenCart={() => setIsOpen(true)}
-      />
+      <CartButton count={cartCount} onOpenCart={() => setIsOpen(true)} />
 
       {/* Overlay */}
       <div
@@ -55,14 +52,10 @@ export default function CartSection({
           bg-(--dark)
           border-l border-border
           transition-transform duration-300 ease-in-out
-          ${
-            isOpen
-              ? "translate-x-0"
-              : "translate-x-full"
-          }
+          ${isOpen ? "translate-x-0" : "translate-x-full"}
         `}
       >
-        <CartApp handleCloseCart={handleCloseCart}/>
+        <CartApp handleCloseCart={handleCloseCart} />
       </aside>
     </>
   );

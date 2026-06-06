@@ -1,4 +1,4 @@
-import { ShoppingBag } from "lucide-react"
+import { ShoppingBag } from "lucide-react";
 
 interface CartButtonProps {
   count: number;
@@ -31,9 +31,9 @@ export default function CartButton({ count, onOpenCart }: CartButtonProps) {
         {count > 0 && (
           <span
             className="
-              absolute -top-2 -right-2
+              absolute -top-4 -right-4
               flex items-center justify-center
-              w-6 h-6
+              size-6
               rounded-full
               bg-(--red)
               text-white
