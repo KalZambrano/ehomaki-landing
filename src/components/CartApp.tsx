@@ -57,9 +57,9 @@ export default function CartApp({ handleCloseCart }: { handleCloseCart: any }) {
 
       <div className="cart-items" id="cartItems">
         {cart.length === 0 ? (
-          <div className="cart-empty" id="cartEmpty">
-            <div className="cart-empty-icon">🍱</div>
-            <p>
+          <div className="text-center py-16 px-8 text-muted" id="cartEmpty">
+            <div className="text-4xl mb-4 opacity-30">🍱</div>
+            <p className="text-sm leading-relaxed">
               Tu carrito está vacío.
               <br />
               Agrega tus makis favoritos.
@@ -88,21 +88,21 @@ export default function CartApp({ handleCloseCart }: { handleCloseCart: any }) {
       </div>
 
       <div
-        className="cart-footer"
+        className="px-8 py-6 border-t border-border"
         id="cartFooter"
         style={{ display: cart.length === 0 ? "none" : "block" }}
       >
-        <div className="cart-subtotal">
+        <div className="flex justify-between mb-2 text-[0.8rem] text-muted">
           <span>Subtotal</span>
           <span>{formatCurrency(subtotal)}</span>
         </div>
-        <div className="cart-subtotal">
+        <div className="flex justify-between mb-2 text-[0.8rem] text-muted">
           <span>Delivery (a confirmar)</span>
           <span>—</span>
         </div>
-        <div className="cart-total">
-          <span className="label">Total</span>
-          <span className="amount">{formatCurrency(subtotal)}</span>
+        <div className="flex justify-between items-baseline mb-6 pt-3 border-t border-border">
+          <span className="text-[0.75rem] tracking-[0.15em] uppercase text-muted">Total</span>
+          <span className="font-['Bebas_Neue',sans-serif] text-[2rem] text-(--gold)">{formatCurrency(subtotal)}</span>
         </div>
         <button
           type="button"

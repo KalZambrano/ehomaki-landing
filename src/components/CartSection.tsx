@@ -19,6 +19,14 @@ export default function CartSection() {
     return () => window.removeEventListener("cartUpdated", onCartUpdated);
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [isOpen]);
+
   const handleCloseCart = () => {
     setIsOpen(false);
   };
