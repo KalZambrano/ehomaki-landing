@@ -1,0 +1,92 @@
+---
+import AccessibilityButton from "./accessibility-button.tsx";
+---
+
+<AccessibilityButton client:load />
+
+<div id="reading-mask"></div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <filter id="protanopia-filter">
+      <feColorMatrix
+        type="matrix"
+        values="
+            0.567 0.433 0 0 0
+            0.558 0.442 0 0 0
+            0 0.242 0.758 0 0
+            0 0 0 1 0"
+      ></feColorMatrix>
+    </filter>
+
+    <filter id="deuteranopia-filter">
+      <feColorMatrix
+        type="matrix"
+        values="
+            0.625 0.375 0 0 0
+            0.70 0.30 0 0 0
+            0 0.30 0.70 0 0
+            0 0 0 1 0"
+      ></feColorMatrix>
+    </filter>
+
+    <filter id="tritanopia-filter">
+      <feColorMatrix
+        type="matrix"
+        values="
+            0.95 0.05 0 0 0
+            0 0.433 0.567 0 0
+            0 0.475 0.525 0 0
+            0 0 0 1 0"
+      ></feColorMatrix>
+    </filter>
+  </defs>
+</svg>
+
+<script is:inline>
+  // Apply saved accessibility preferences on page load
+  const root = document.documentElement;
+  const mask = document.getElementById("reading-mask");
+
+  // Apply color blindness filter
+  const savedFilter = localStorage.getItem("accessibility-filter");
+  if (savedFilter && savedFilter !== "normal") {
+    root.classList.add(savedFilter);
+  }
+
+  // Apply reading mask
+  const isMaskActive = localStorage.getItem("reading-mask-active") === "true";
+  const maskOpacity = localStorage.getItem("mask-opacity") || "60";
+
+  if (mask) {
+    mask.style.display = isMaskActive ? "block" : "none";
+    mask.style.setProperty(
+      "--mask-opacity",
+      (Number(maskOpacity) / 100).toString(),
+    );
+  }
+
+  // Track mouse position for reading mask (only if React component hasn't loaded yet)
+  if (isMaskActive && !window.__accessibilityListenerAdded) {
+    window.addEventListener("mousemove", (e) => {
+      if (mask) {
+        mask.style.setProperty("--mask-position", `${e.clientY}px`);
+      }
+    });
+    window.__accessibilityListenerAdded = true;
+  }
+</script>
+
+<style>
+  :root.protanopia {
+    filter: url(#protanopia-filter);
+  }
+
+  :root.deuteranopia {
+    filter: url(#deuteranopia-filter);
+  }
+
+  :root.tritanopia {
+    filter: url(#tritanopia-filter);
+  }
+</style>
