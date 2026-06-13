@@ -9,6 +9,7 @@ import Footer from "@/components/Footer.astro"
 import CartSection from "@/components/CartSection";
 import { ClientRouter } from "astro:transitions"
 import { Toast } from "@/components/Toast";
+import AccesibilityApp from "@/components/ui/accesibility-app.astro";
 ---
 
 <!doctype html>
@@ -61,6 +62,7 @@ import { Toast } from "@/components/Toast";
   <CartSection client:load />
   <Footer />
   <Toast client:idle />
+  <AccesibilityApp />
 </html>
 
 <style>

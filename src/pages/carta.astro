@@ -1,5 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
 import CartaSection from "@/components/CartaSection.astro";
 import WhatsAppIcon from "@/assets/whatsapp.svg";
 import SearchIcon from "@/assets/icons/search.svg";
@@ -9,43 +10,7 @@ const totalItems = CATEGORIAS.reduce((acc, cat) => acc + cat.items.length, 0);
 ---
 
 <Layout>
-  <nav class="animate-fade-in-down delay-200 flex justify-between gap-16">
-    <a href="/" class="flex flex-col leading-none no-underline">
-      <span
-        class="mb-2 font-serif text-[0.6rem] uppercase tracking-[0.4em] text-(--gold)"
-        style="font-family: 'Noto Serif JP', serif;"
-      >
-        鮨 ✦ Lima, Perú
-      </span>
-
-      <span
-        class="text-[1.8rem] tracking-[0.08em] text-white max-[480px]:text-[1.5rem]"
-        style="font-family: 'Bebas Neue', sans-serif;"
-      >
-        Ehomakis
-      </span>
-    </a>
-
-    <div
-      class="flex items-center gap-3 w-full md:w-105 lg:w-130 border border-border bg-(--dark) px-4 py-3 transition-colors duration-200 focus-within:border-(--gold)"
-    >
-      <SearchIcon class="size-4
-      shrink-0
-      text-muted" />
-
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Buscar maki... ej: salmón, acevichado, spicy"
-        class="min-w-0 flex-1 bg-transparent outline-none border-none text-white text-sm placeholder:text-muted"
-      />
-
-      <span
-        id="searchCount"
-        class="hidden md:block shrink-0 text-[11px] tracking-widest text-(--gold) whitespace-nowrap"
-      ></span>
-    </div>
-  </nav>
+  <Header />
   <div class="min-h-dvh">
     <!-- Hero de la carta -->
     <div class="carta-hero">
@@ -57,7 +22,9 @@ const totalItems = CATEGORIAS.reduce((acc, cat) => acc + cat.items.length, 0);
         </div>
         <h1 class="carta-title">
           <span class="title-jp animate-fade-in-up delay-200">m.a.k.i.s</span>
-          <span class="title-main animate-fade-in-up delay-300">Nuestra Carta</span>
+          <span class="title-main animate-fade-in-up delay-300">
+            Nuestra Carta
+          </span>
         </h1>
         <p class="carta-subtitle animate-fade-in-up delay-400">
           {totalItems} variedades · Ingredientes frescos diarios · Cocina Nikkei
@@ -76,21 +43,24 @@ const totalItems = CATEGORIAS.reduce((acc, cat) => acc + cat.items.length, 0);
               <span class="price-desc">Ideal para probar</span>
             </div>
           </div>
-
-          <!-- CTA -->
-          <a
-            href="https://wa.me/51941442899"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group inline-flex items-center justify-center gap-3 rounded-full border border-(--gold) bg-linear-to-r from-[rgba(212,175,55,0.12)] to-[rgba(212,175,55,0.05)] px-8 py-5 text-[0.85rem] font-semibold uppercase tracking-[0.18em] text-(--gold) shadow-[0_10px_30px_rgba(212,175,55,0.15)] 
-            transition-all duration-300 hover:-translate-y-1 hover:bg-(--gold) hover:text-black hover:shadow-[0_20px_45px_rgba(212,175,55,0.35)] animate-fade-in-up delay-500"
+          <div
+            class="flex items-center gap-3 w-full md:w-105 lg:w-130 border border-border bg-(--dark) px-4 py-3
+            transition-colors animate-fade-in-up duration-500 focus-within:border-(--gold)"
           >
-            <WhatsAppIcon
-              class="size-5 transition-transform duration-300 group-hover:scale-110"
+            <SearchIcon class="size-4 shrink-0 text-muted" />
+
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Buscar maki... ej: salmón, acevichado, spicy"
+              class="min-w-0 flex-1 bg-transparent outline-none border-none text-white text-sm placeholder:text-muted"
             />
 
-            Pedir por WhatsApp
-          </a>
+            <span
+              id="searchCount"
+              class="hidden md:block shrink-0 text-[11px] tracking-widest text-(--gold) whitespace-nowrap"
+            ></span>
+          </div>
         </div>
       </div>
     </div>
@@ -138,9 +108,7 @@ const totalItems = CATEGORIAS.reduce((acc, cat) => acc + cat.items.length, 0);
 
       <!-- CARTA -->
       <div class="mx-auto max-w-350 px-4 pb-16 md:px-0 md:pb-12">
-        {CATEGORIAS.map((cat) => (
-          <CartaSection cat={cat} />
-        ))}
+        {CATEGORIAS.map((cat) => <CartaSection cat={cat} />)}
 
         <!-- Estado vacío -->
         <div id="emptyState" class="py-24 text-center" style="display:none">
@@ -545,7 +513,7 @@ const totalItems = CATEGORIAS.reduce((acc, cat) => acc + cat.items.length, 0);
   }
 </style>
 
-<script>
+<script is:inline>
   // ── FILTROS POR CATEGORÍA ──
   const filterBtns =
     document.querySelectorAll<HTMLButtonElement>(".filter-btn");

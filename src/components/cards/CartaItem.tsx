@@ -45,7 +45,7 @@ export function CartaItem({ cat, item, isComplement }: CartaItemProps) {
       </div>
 
       {/* Image */}
-      <div className="relative aspect-4/3 overflow-hidden">
+      <div className="relative aspect-[2.5] lg:aspect-4/3 overflow-hidden">
         <img
           src={item.img}
           alt={item.nombre}

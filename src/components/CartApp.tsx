@@ -1,22 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { CartItem } from "./cards/CartItem";
 import { showToast } from "../lib/events";
-
-export type CartItemType = {
-  id: string;
-  name: string;
-  price: number;
-  img: string;
-  qty: number;
-};
+import { cartStore, type CartItemType } from "../lib/cartStore";
 
 const formatCurrency = (value: number) => `S/ ${value.toFixed(2)}`;
 
 export default function CartApp({ handleCloseCart }: { handleCloseCart: any }) {
   const [cart, setCart] = useState<CartItemType[]>([]);
-  // const [toastMessage, setToastMessage] = useState("");
-  // const [toastVisible, setToastVisible] = useState(false);
-  // const toastTimer = useRef<number | null>(null);
+  const [hydrated, setHydrated] = useState(false);
 
   const cartCount = useMemo(
     () => cart.reduce((sum, item) => sum + item.qty, 0),
@@ -24,78 +15,27 @@ export default function CartApp({ handleCloseCart }: { handleCloseCart: any }) {
   );
 
   useEffect(() => {
+    setCart(cartStore.get());
+    setHydrated(true);
     const countEl = document.getElementById("cartCount");
-    if (countEl) {
-      countEl.textContent = String(cartCount);
-    }
+    if (countEl) countEl.textContent = String(cartCount);
   }, [cartCount]);
 
-  const addToCart = (
-    id: string,
-    name: string,
-    price: number,
-    img: string,
-    triggerButton?: HTMLElement,
-  ) => {
-    setCart((prevCart) => {
-      const existing = prevCart.find((item) => item.id === id);
-      if (existing) {
-        return prevCart.map((item) =>
-          item.id === id ? { ...item, qty: item.qty + 1 } : item,
-        );
-      }
-      return [...prevCart, { id, name, price, img, qty: 1 }];
-    });
-
-    showToast(`${name} agregado ✓`);
-
-    if (triggerButton) {
-      triggerButton.textContent = "✓";
-      triggerButton.classList.add("added");
-      window.setTimeout(() => {
-        triggerButton.textContent = "+";
-        triggerButton.classList.remove("added");
-      }, 1500);
-    }
-  };
-
-  const handleIncrement = (id: string) => {
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.id === id ? { ...item, qty: item.qty + 1 } : item,
-      ),
-    );
-  };
-
-  const handleDecrement = (id: string) => {
-    setCart((prevCart) =>
-      prevCart
-        .map((item) => (item.id === id ? { ...item, qty: item.qty - 1 } : item))
-        .filter((item) => item.qty > 0),
-    );
-  };
-
-  const handleRemove = (id: string) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
-  };
+  const handleIncrement = (id: string) => setCart(cartStore.increment(id));
+  const handleDecrement = (id: string) => setCart(cartStore.decrement(id));
+  const handleRemove = (id: string) => setCart(cartStore.remove(id));
 
   useEffect(() => {
     const handleAddToCartEvent = (event: Event) => {
-      const customEvent = event as CustomEvent<{
-        id: string;
-        name: string;
-        price: number;
-        img: string;
-      }>;
-      const { id, name, price, img } = customEvent.detail;
-      addToCart(id, name, price, img);
+      const { id, name, price, img } = (event as CustomEvent).detail;
+      // 👇 store.add persiste y devuelve el array actualizado
+      const updated = cartStore.add({ id, name, price, img });
+      setCart(updated);
+      showToast(`${name} agregado ✓`);
     };
 
     window.addEventListener("addToCart", handleAddToCartEvent);
-
-    return () => {
-      window.removeEventListener("addToCart", handleAddToCartEvent);
-    };
+    return () => window.removeEventListener("addToCart", handleAddToCartEvent);
   }, []);
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
@@ -117,9 +57,9 @@ export default function CartApp({ handleCloseCart }: { handleCloseCart: any }) {
 
       <div className="cart-items" id="cartItems">
         {cart.length === 0 ? (
-          <div className="cart-empty" id="cartEmpty">
-            <div className="cart-empty-icon">🍱</div>
-            <p>
+          <div className="text-center py-16 px-8 text-muted" id="cartEmpty">
+            <div className="text-4xl mb-4 opacity-30">🍱</div>
+            <p className="text-sm leading-relaxed">
               Tu carrito está vacío.
               <br />
               Agrega tus makis favoritos.
@@ -148,21 +88,21 @@ export default function CartApp({ handleCloseCart }: { handleCloseCart: any }) {
       </div>
 
       <div
-        className="cart-footer"
+        className="px-8 py-6 border-t border-border"
         id="cartFooter"
         style={{ display: cart.length === 0 ? "none" : "block" }}
       >
-        <div className="cart-subtotal">
+        <div className="flex justify-between mb-2 text-[0.8rem] text-muted">
           <span>Subtotal</span>
           <span>{formatCurrency(subtotal)}</span>
         </div>
-        <div className="cart-subtotal">
+        <div className="flex justify-between mb-2 text-[0.8rem] text-muted">
           <span>Delivery (a confirmar)</span>
           <span>—</span>
         </div>
-        <div className="cart-total">
-          <span className="label">Total</span>
-          <span className="amount">{formatCurrency(subtotal)}</span>
+        <div className="flex justify-between items-baseline mb-6 pt-3 border-t border-border">
+          <span className="text-[0.75rem] tracking-[0.15em] uppercase text-muted">Total</span>
+          <span className="font-['Bebas_Neue',sans-serif] text-[2rem] text-(--gold)">{formatCurrency(subtotal)}</span>
         </div>
         <button
           type="button"

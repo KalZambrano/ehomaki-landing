@@ -1,23 +1,13 @@
-import CartButton from "./ui/cart-button";
-import CartApp from "./CartApp";
-import { useEffect, useState } from "react";
-import { cartStore } from "../lib/cartStore";
+import { PersonStanding } from "lucide-react";
+import { useState, useEffect } from "react";
+import AccessibilityAside from "../AccessibilityAside";
 
-export default function CartSection() {
+export default function AccessibilityButton() {
   const [isOpen, setIsOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
 
-  useEffect(() => {
-    // console.log("cartStore", cartStore.get().length);
-    // carga inicial desde localStorage
-    const getCount = () => cartStore.get().length;
-    setCartCount(getCount());
-
-    // se actualiza cada vez que CartApp modifica el carrito
-    const onCartUpdated = () => setCartCount(getCount());
-    window.addEventListener("cartUpdated", onCartUpdated);
-    return () => window.removeEventListener("cartUpdated", onCartUpdated);
-  }, []);
+  const handleCloseAccessibility = () => {
+    setIsOpen(false);
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -27,13 +17,9 @@ export default function CartSection() {
     }
   }, [isOpen]);
 
-  const handleCloseCart = () => {
-    setIsOpen(false);
-  };
-
   return (
     <>
-      <CartButton count={cartCount} onOpenCart={() => setIsOpen(true)} />
+      <AccessibilityButtonIcon onOpenAccessibility={() => setIsOpen(true)} />
 
       {/* Overlay */}
       <div
@@ -63,8 +49,20 @@ export default function CartSection() {
           ${isOpen ? "translate-x-0" : "translate-x-full"}
         `}
       >
-        <CartApp handleCloseCart={handleCloseCart} />
+        <AccessibilityAside handleCloseAccessibility={handleCloseAccessibility} />
       </aside>
     </>
+  );
+}
+
+function AccessibilityButtonIcon({ onOpenAccessibility }: { onOpenAccessibility: () => void }) {
+  return (
+    <button
+      className="fixed bottom-14 left-6 z-20 cursor-pointer bg-white rounded-full p-2"
+      onClick={onOpenAccessibility}
+      aria-label="Abrir opciones de accesibilidad"
+    >
+      <PersonStanding className="size-8 md:size-9 text-blue-500" />
+    </button>
   );
 }
