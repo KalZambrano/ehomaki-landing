@@ -27,9 +27,9 @@ export default function CartApp({ handleCloseCart }: { handleCloseCart: any }) {
 
   useEffect(() => {
     const handleAddToCartEvent = (event: Event) => {
-      const { id, name, price, img } = (event as CustomEvent).detail;
+      const { id, name, price, img, items } = (event as CustomEvent).detail;
       // 👇 store.add persiste y devuelve el array actualizado
-      const updated = cartStore.add({ id, name, price, img });
+      const updated = cartStore.add({ id, name, price, img, items });
       setCart(updated);
       showToast(`${name} agregado ✓`);
     };
@@ -101,24 +101,45 @@ export default function CartApp({ handleCloseCart }: { handleCloseCart: any }) {
           <span>—</span>
         </div>
         <div className="flex justify-between items-baseline mb-6 pt-3 border-t border-border">
-          <span className="text-[0.75rem] tracking-[0.15em] uppercase text-muted">Total</span>
-          <span className="font-['Bebas_Neue',sans-serif] text-[2rem] text-(--gold)">{formatCurrency(subtotal)}</span>
+          <span className="text-[0.75rem] tracking-[0.15em] uppercase text-muted">
+            Total
+          </span>
+          <span className="font-['Bebas_Neue',sans-serif] text-[2rem] text-(--gold)">
+            {formatCurrency(subtotal)}
+          </span>
         </div>
+        <button className="checkout-btn">Ordenar</button>
         <button
           type="button"
-          className="checkout-btn"
+          className="font-medium flex mx-auto p-4 cursor-pointer"
           id="checkoutBtn"
           aria-label="Enviar pedido por WhatsApp"
           onClick={() => {
             if (cart.length === 0) return;
+
             const lines = cart
-              .map(
-                (item) =>
-                  `• ${item.name} x${item.qty} — S/ ${(item.price * item.qty).toFixed(2)}`,
-              )
-              .join("\n");
+              .map((item) => {
+                const subItems = item.items?.length
+                  ? "\n" +
+                    item.items
+                      .map((i) => `   ◦ ${i.name} x${i.quantity}`)
+                      .join("\n")
+                  : "";
+
+                return `• ${item.name} x${item.qty} — S/ ${(item.price * item.qty).toFixed(2)}${subItems}`;
+              })
+              .join("\n\n");
+
             const total = subtotal.toFixed(2);
-            const msg = `¡Hola! Quiero hacer el siguiente pedido:\n\n${lines}\n\n*Total: S/ ${total}*\n\n¿Pueden confirmar disponibilidad y costo de delivery? 🍣`;
+
+            const msg = `¡Hola! Quiero hacer el siguiente pedido:
+
+${lines}
+
+*Total: S/ ${total}*
+
+¿Pueden confirmar disponibilidad y costo de delivery?`;
+
             window.open(
               `https://wa.me/51941442899?text=${encodeURIComponent(msg)}`,
               "_blank",
@@ -127,9 +148,6 @@ export default function CartApp({ handleCloseCart }: { handleCloseCart: any }) {
         >
           Pedir por WhatsApp →
         </button>
-        <p className="whatsapp-note">
-          Te redirigiremos a WhatsApp con tu pedido listo para enviar.
-        </p>
       </div>
     </>
   );

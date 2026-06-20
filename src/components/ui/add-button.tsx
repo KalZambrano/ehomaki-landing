@@ -1,6 +1,20 @@
 import { handleAddToCart } from "@/lib/events";
 import { type ComboSelect } from "@/types/types";
 
+function generateUniqueId(combo: ComboSelect, comboId?: string): string {
+  if (comboId) return comboId;
+  
+  // Generate unique ID based on combo name and selected varieties
+  const varietiesKey = combo.items
+    ? combo.items
+        .map((item) => `${item.name}:${item.quantity}`)
+        .sort()
+        .join("|")
+    : "";
+  
+  return varietiesKey ? `${combo.name}_${varietiesKey}` : combo.name;
+}
+
 export function AddButton({
   disabled = false,
   isSticky = false,
@@ -22,7 +36,7 @@ export function AddButton({
         ${isSticky ? "sticky bottom-4 mt-6" : ""}
       transition hover:bg-[#d8aa4f] 
       disabled:cursor-not-allowed disabled:bg-[#1b1812] disabled:text-zinc-500`}
-      onClick={() => handleAddToCart(comboId || combo.name, combo.name, comboPrice || 0, comboImg || "")}
+      onClick={() => handleAddToCart(generateUniqueId(combo, comboId), combo.name, comboPrice || 0, comboImg || "", combo.items)}
       disabled={disabled}
     >
       Añadir al carrito

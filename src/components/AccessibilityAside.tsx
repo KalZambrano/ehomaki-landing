@@ -139,12 +139,17 @@ export default function AccessibilityAside({
 
       <div className="cart-items">
         <div className="accessibility-options">
+          <div className="flex gap-2 mx-auto p-4 bg-black/30 rounded-lg w-fit mb-4">
+            {["red", "green", "blue"].map((c) => (
+              <div key={c} className={`color-circle ${c}`} />
+            ))}
+          </div>
           <p className="accessibility-description">
             Selecciona un filtro de daltonismo para adaptar los colores de la
             página:
           </p>
 
-          <div className="filter-options">
+          <div className="gap-4 filter-options">
             {FILTERS.map(({ id, label, description }) => (
               <button
                 key={id}
@@ -154,11 +159,6 @@ export default function AccessibilityAside({
                 aria-label={description}
                 aria-pressed={selectedFilter === id}
               >
-                <div className={`filter-preview ${id}`}>
-                  {["red", "green", "blue"].map((c) => (
-                    <div key={c} className={`color-circle ${c}`} />
-                  ))}
-                </div>
                 <span>{label}</span>
               </button>
             ))}

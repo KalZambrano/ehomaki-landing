@@ -274,13 +274,6 @@ html.high-contrast {
   transform: translateY(-1px);
 }
 
-.whatsapp-note {
-  margin-top: 0.75rem;
-  font-size: 0.65rem;
-  color: var(--muted);
-  text-align: center;
-  line-height: 1.5;
-}
 .toast {
   position: fixed;
   bottom: 2rem;
@@ -477,9 +470,6 @@ nav {
 }
 
 /* Accessibility Panel Styles */
-.accessibility-options {
-  padding: 1rem 0;
-}
 
 .accessibility-description {
   font-size: 0.85rem;
@@ -491,7 +481,6 @@ nav {
 .filter-options {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 1rem;
 }
 
 .filter-option {

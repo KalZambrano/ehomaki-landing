@@ -1,3 +1,5 @@
+import { type Item } from '@/types/types'
+
 export const showToast = (message: string) => {
     // setToastMessage(message);
     // setToastVisible(true);
@@ -15,13 +17,14 @@ export const showToast = (message: string) => {
     window.dispatchEvent(event);
 };
 
-export const handleAddToCart = (id: string, name: string, price: number, img: string) => {
+export const handleAddToCart = (id: string, name: string, price: number, img: string, items?: Item[]) => {
     const event = new CustomEvent("addToCart", {
         detail: {
             id,
             name,
             price,
             img,
+            items
         },
     });
     window.dispatchEvent(event);

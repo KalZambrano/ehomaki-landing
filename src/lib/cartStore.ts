@@ -1,3 +1,5 @@
+import type { Item } from "@/types/types";
+
 // src/lib/cartStore.ts
 export type CartItemType = {
     id: string;
@@ -5,6 +7,7 @@ export type CartItemType = {
     price: number;
     img: string;
     qty: number;
+    items?: Item[]
 };
 
 const KEY = "sushi_cart";
@@ -29,9 +32,21 @@ export const cartStore = {
 
     add(item: Omit<CartItemType, "qty">): CartItemType[] {
         const cart = this.get();
-        const existing = cart.find((i) => i.id === item.id);
+        // Check if an item with the same ID AND same items (varieties) exists
+        const existing = cart.find((i) => {
+            if (i.id !== item.id) return false;
+            // If both have items, compare them
+            if (i.items && item.items) {
+                const itemsMatch = JSON.stringify(i.items) === JSON.stringify(item.items);
+                return itemsMatch;
+            }
+            // If neither has items, they match
+            if (!i.items && !item.items) return true;
+            // If one has items and the other doesn't, they don't match
+            return false;
+        });
         const updated = existing
-            ? cart.map((i) => (i.id === item.id ? { ...i, qty: i.qty + 1 } : i))
+            ? cart.map((i) => (i.id === item.id && JSON.stringify(i.items) === JSON.stringify(item.items) ? { ...i, qty: i.qty + 1 } : i))
             : [...cart, { ...item, qty: 1 }];
         this.save(updated);
         return updated;
