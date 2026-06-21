@@ -1,0 +1,555 @@
+---
+import CartaSection from "@/components/CartaSection.astro";
+import WhatsAppIcon from "@/assets/whatsapp.svg";
+import SearchIcon from "@/assets/icons/search.svg";
+import { CATEGORIAS } from "@/const/carta";
+
+const totalItems = CATEGORIAS.reduce((acc, cat) => acc + cat.items.length, 0);
+---
+
+<div class="min-h-dvh">
+  <!-- Hero de la carta -->
+  <div class="carta-hero">
+    <div class="max-w-4xl mx-auto relative z-1">
+      <div class="eyebrow animate-fade-in-down delay-100">
+        <span class="eyebrow-line"></span>
+        <span class="eyebrow-text">Carta completa</span>
+        <span class="eyebrow-line"></span>
+      </div>
+      <h1 class="flex flex-col items-center gap-1 mb-4">
+        <span class="title-jp animate-fade-in-up delay-200">m.a.k.i.s</span>
+        <span class="title-main animate-fade-in-up delay-300">
+          Nuestra Carta
+        </span>
+      </h1>
+      <p class="carta-subtitle animate-fade-in-up delay-400">
+        {totalItems} variedades · Ingredientes frescos diarios · Cocina Nikkei
+      </p>
+      <div class="my-12 flex flex-col items-center gap-8">
+        <!-- PRICING -->
+        <div class="price-cards-row">
+          <div class="price-card featured animate-fade-in-right delay-600">
+            <span class="price-label">10 piezas</span>
+            <span class="price-value">S/ 25</span>
+            <span class="mt-3 text-xs text-muted tracking-wider"
+              >La experiencia completa</span
+            >
+          </div>
+          <div class="price-card animate-fade-in-left delay-600">
+            <span class="price-label">6 piezas</span>
+            <span class="price-value">S/ 18</span>
+            <span class="mt-3 text-xs text-muted tracking-wider"
+              >Ideal para probar</span
+            >
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-3 w-full md:w-105 lg:w-130 border border-border bg-(--dark) px-4 py-3
+            transition-colors animate-fade-in-up duration-500 focus-within:border-(--gold)"
+        >
+          <SearchIcon class="size-4 shrink-0 text-muted" />
+
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Buscar maki... ej: salmón, acevichado, spicy"
+            class="min-w-0 flex-1 bg-transparent outline-none border-none text-white text-sm placeholder:text-muted"
+          />
+
+          <span
+            id="searchCount"
+            class="hidden md:block shrink-0 text-[11px] tracking-widest text-(--gold) whitespace-nowrap"
+          ></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="mx-auto max-w-400 px-4 lg:px-8 py-4 lg:grid lg:grid-cols-[280px_1fr] lg:gap-8"
+  >
+    <!-- FILTROS -->
+    <div
+      class="lg:sticky lg:top-24 lg:self-start z-30 rounded-2xl border border-[#c89b3c22] bg-[rgba(9,8,6,0.92)] backdrop-blur-xl shadow-[0_0_40px_rgba(200,155,60,0.08)]"
+    >
+      <div class="relative p-4 md:p-6">
+        <!-- Título -->
+        <div class="mb-5 flex justify-center">
+          <span
+            class="rounded-full border border-[#c89b3c44] bg-[#0f0d09] px-6 py-2 text-[11px] font-medium uppercase tracking-[0.45em] text-[#c89b3c]"
+          >
+            ✦ FILTROS ✦
+          </span>
+        </div>
+
+        <!-- Botones -->
+        <div
+          class="flex gap-2 overflow-x-auto py-2 md:flex-wrap md:justify-center md:overflow-visible"
+        >
+          <button
+            class="filter-btn active rounded-full border border-[rgba(200,155,60,0.18)] bg-[rgba(255,255,255,0.02)] px-5 py-3 font-['DM_Sans'] text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[#d6c5a1] backdrop-blur-md transition-all duration-250 hover:-translate-y-0.5 hover:border-[rgba(200,155,60,0.55)] hover:text-[#c89b3c] md:px-4 md:py-2.5 md:text-[0.65rem] md:tracking-[0.12em] max-[400px]:px-3 max-[400px]:py-1.5 max-[400px]:text-[0.6rem]"
+            data-filter="all"
+          >
+            Todos
+          </button>
+
+          {
+            CATEGORIAS.map((cat) => (
+              <button
+                class="filter-btn shrink-0 rounded-full border border-[rgba(200,155,60,0.18)] bg-[rgba(255,255,255,0.02)] px-5 py-3 font-['DM_Sans'] text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[#d6c5a1] backdrop-blur-md transition-all duration-250 hover:-translate-y-0.5 hover:border-[rgba(200,155,60,0.55)] hover:text-[#c89b3c] md:px-4 md:py-2.5 md:text-[0.65rem] md:tracking-[0.12em] max-[400px]:px-3 max-[400px]:py-1.5 max-[400px]:text-[0.6rem]"
+                data-filter={cat.id}
+              >
+                {cat.label}
+              </button>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- CARTA -->
+    <div class="mx-auto max-w-350 px-4 pb-16 md:px-0 md:pb-12">
+      {CATEGORIAS.map((cat) => <CartaSection cat={cat} />)}
+
+      <!-- Estado vacío -->
+      <div id="emptyState" class="py-24 text-center" style="display:none">
+        <div
+          class="font-['Noto_Serif_JP'] text-[6rem] leading-none text-[rgba(201,151,58,0.1)] mb-4"
+        >
+          空
+        </div>
+        <p class="mb-6 text-[0.9rem] text-muted">
+          No encontramos ningún maki con ese nombre.
+        </p>
+        <button
+          id="clearSearch"
+          class="border border-(--gold) bg-transparent px-8 py-2.5 font-['DM_Sans'] text-[0.75rem] uppercase tracking-widest text-(--gold) transition-all duration-200 hover:bg-(--gold) hover:text-(--black)"
+          >Ver todos</button
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA final -->
+  <section
+    class="relative overflow-hidden
+    border-t border-[#1b1812]
+    bg-[#090806]
+    px-6 py-5
+    text-center
+    md:px-10 md:py-12"
+  >
+    {/* Ambient glow */}
+    <div
+      class="pointer-events-none absolute inset-0 opacity-40
+      [background:radial-gradient(circle_at_top,rgba(37,211,102,0.10),transparent_45%)]"
+    >
+    </div>
+
+    <div class="relative z-10 mx-auto max-w-4xl">
+      {/* Label */}
+      <div class="mb-5 inline-flex items-center gap-3">
+        <div class="h-px w-8 bg-[#c89b3c]/40"></div>
+
+        <p
+          class="text-[10px] font-medium
+          uppercase tracking-[0.4em]
+          text-[#c89b3c]"
+        >
+          ¿Listo para pedir?
+        </p>
+
+        <div class="h-px w-8 bg-[#c89b3c]/40"></div>
+      </div>
+
+      {/* Title */}
+      <h2
+        class="mx-auto max-w-3xl font-['Bebas_Neue'] text-[3rem] leading-[0.9] tracking-[0.04em]
+        text-[#f5f1ea]
+        sm:text-[4rem]
+        md:text-[5rem]
+        lg:text-[6rem]"
+      >
+        Escríbenos y armamos tu tabla
+      </h2>
+
+      {/* Subtitle */}
+      <p
+        class="mx-auto mt-6 max-w-2xl text-sm leading-8 text-[#cfc5b6]
+        md:text-base"
+      >
+        Combina tus makis favoritos, elige tus entradas y recibe una experiencia
+        Nikkei pensada para compartir.
+      </p>
+
+      {/* CTA */}
+      <div class="mt-12 flex justify-center">
+        <a
+          href="https://wa.me/51941442899"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group relative inline-flex overflow-hidden
+          rounded-full
+          border border-[#25d366]/30
+          bg-[#11110d] px-7 py-4 text-sm font-medium tracking-[0.12em] text-white
+          transition-all duration-300
+          hover:-translate-y-1
+          hover:border-[#25d366]/50
+          hover:shadow-[0_0_35px_rgba(37,211,102,0.18)]"
+        >
+          {/* Hover bg */}
+          <span
+            class="absolute inset-0
+            origin-left scale-x-0
+            bg-[#25d366]
+            transition-transform duration-300 ease-out
+            group-hover:scale-x-100"
+          ></span>
+
+          {/* Content */}
+          <span
+            class="relative z-10
+            flex items-center gap-4
+            transition-colors duration-300
+            group-hover:text-black"
+          >
+            <span
+              class="flex size-10 items-center justify-center
+              rounded-full
+              border border-white/10
+              bg-white/5
+              transition-all duration-300
+              group-hover:border-black/10
+              group-hover:bg-black/10"
+            >
+              <WhatsAppIcon class="size-5" />
+            </span>
+
+            <span class="flex flex-col items-start">
+              <span
+                class="text-[10px]
+                uppercase tracking-[0.25em]
+                opacity-70"
+              >
+                WhatsApp
+              </span>
+
+              <span class="text-sm font-semibold tracking-[0.08em]">
+                +51 941 442 899
+              </span>
+            </span>
+
+            <span
+              class="text-lg
+              transition-transform duration-300
+              group-hover:translate-x-1"
+            >
+              →
+            </span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  /* ── HERO ── */
+  .carta-hero {
+    padding: 6rem 2rem 4rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(
+        ellipse at top,
+        rgba(201, 151, 58, 0.08) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        ellipse at bottom right,
+        rgba(212, 175, 55, 0.05) 0%,
+        transparent 40%
+      );
+  }
+  .carta-hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 100px,
+      rgba(201, 151, 58, 0.02) 100px,
+      rgba(201, 151, 58, 0.02) 101px
+    );
+    pointer-events: none;
+  }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .eyebrow-line {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .eyebrow-text {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 0.5rem 1.5rem;
+    border: 1px solid var(--gold);
+    border-radius: 50px;
+    background: rgba(212, 175, 55, 0.1);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+  }
+
+  .title-jp {
+    font-family: "DM Sans", sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.4em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .title-main {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    letter-spacing: 0.08em;
+    line-height: 1;
+    color: var(--white);
+    text-shadow: 0 0 40px rgba(201, 151, 58, 0.3);
+  }
+
+  .carta-subtitle {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    letter-spacing: 0.08em;
+    padding: 0.5rem 1.5rem;
+    border: 1px solid rgba(201, 151, 58, 0.2);
+    border-radius: 50px;
+    display: inline-block;
+    background: rgba(201, 151, 58, 0.05);
+  }
+
+  /* ── SEARCH BAR ── */
+  .search-bar {
+    max-width: 1000px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: 1px solid var(--border);
+    padding: 0.6rem 1rem;
+    background: var(--dark);
+    transition: border-color 0.2s;
+  }
+  .search-bar:focus-within {
+    border-color: var(--gold);
+  }
+  .search-input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--white);
+    font-family: "DM Sans", sans-serif;
+    font-size: 0.85rem;
+  }
+  .search-input::placeholder {
+    color: var(--muted);
+  }
+
+  /* ── PRICE CARDS ── */
+  .price-cards-row {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .price-card {
+    min-width: 180px;
+    padding: 1.75rem 2rem;
+    border: 2px solid rgba(212, 175, 55, 0.2);
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.02)
+    );
+    backdrop-filter: blur(15px);
+    border-radius: 24px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+
+    transition:
+      transform 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .price-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    border-color: rgba(212, 175, 55, 0.5);
+    box-shadow: 0 20px 40px rgba(212, 175, 55, 0.15);
+  }
+
+  .price-card.featured {
+    border-color: var(--gold);
+    background: linear-gradient(
+      145deg,
+      rgba(212, 175, 55, 0.15),
+      rgba(212, 175, 55, 0.05)
+    );
+    box-shadow: 0 15px 35px rgba(212, 175, 55, 0.2);
+  }
+
+  .price-card.featured::after {
+    content: "★ FAVORITO";
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    background: var(--gold);
+    color: var(--black);
+    font-size: 0.6rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .price-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .price-value {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 3.5rem;
+    line-height: 1;
+    color: var(--white);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+
+  .price-card.featured .price-value {
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+  }
+
+  .filter-btn.active {
+    background: #c89b3c;
+    border-color: #c89b3c;
+    color: #000000;
+  }
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .carta-hero {
+      padding: 6rem 1rem 2.5rem;
+    }
+    .search-bar {
+      width: 100%;
+      max-width: none;
+    }
+    .price-card {
+      min-width: 140px;
+      padding: 1.25rem 1.5rem;
+    }
+    .price-value {
+      font-size: 2.5rem;
+    }
+  }
+</style>
+
+<script is:inline>
+  function initFilters() {
+    const filterBtns = document.querySelectorAll(".filter-btn");
+    const sections = document.querySelectorAll(".cat-section");
+
+    const searchInput = document.getElementById("searchInput");
+    const searchCount = document.getElementById("searchCount");
+    const emptyState = document.getElementById("emptyState");
+    const clearBtn = document.getElementById("clearSearch");
+
+    if (!searchInput || !searchCount || !emptyState || !clearBtn) return;
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        filterBtns.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        const filter = btn.dataset.filter;
+        sections.forEach((sec) => {
+          if (filter === "all" || sec.dataset.cat === filter)
+            sec.style.display = "";
+          else sec.style.display = "none";
+        });
+
+        searchInput.value = "";
+        emptyState.style.display = "none";
+        document
+          .querySelectorAll(".maki-card")
+          .forEach((c) => (c.style.display = ""));
+      });
+    });
+
+    searchInput.addEventListener("input", () => {
+      const q = (searchInput.value || "").toLowerCase().trim();
+      const cards = document.querySelectorAll(".maki-card");
+      let visible = 0;
+
+      cards.forEach((card) => {
+        const name = (card.dataset.name || "").toLowerCase();
+        const desc = (card.dataset.desc || "").toLowerCase();
+        const match = !q || name.includes(q) || desc.includes(q);
+        card.style.display = match ? "" : "none";
+        if (match) visible++;
+      });
+
+      sections.forEach((sec) => {
+        const hasVisible = Array.from(sec.querySelectorAll(".maki-card")).some(
+          (c) => c.style.display !== "none",
+        );
+        sec.style.display = hasVisible ? "" : "none";
+      });
+
+      searchCount.textContent = q
+        ? `${visible} resultado${visible !== 1 ? "s" : ""}`
+        : "";
+      emptyState.style.display = q && visible === 0 ? "block" : "none";
+
+      if (q) {
+        filterBtns.forEach((b) => b.classList.remove("active"));
+        if (filterBtns[0]) filterBtns[0].classList.add("active");
+      }
+    });
+
+    clearBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      searchInput.dispatchEvent(new Event("input"));
+      if (filterBtns[0]) filterBtns[0].classList.add("active");
+    });
+  }
+
+  // Cubre ambos casos: DOM ya listo o aún cargando
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initFilters);
+  } else {
+    initFilters();
+  }
+</script>

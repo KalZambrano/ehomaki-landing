@@ -1,0 +1,253 @@
+---
+import SectionContainer from "@/components/SectionContainer.astro";
+import { COMBOS } from "@/const/combos";
+import ArrowRight from "@/assets/icons/arrow-right.svg";
+
+const TABLAS = COMBOS.filter((c) => c.type === "tabla");
+const BENTOS = COMBOS.filter((c) => c.type === "bento");
+const FAMILIAR = COMBOS.find((c) => c.slug === "combo-familiar");
+---
+
+<!-- Hero Section -->
+<section class="combos-hero relative overflow-hidden">
+  <div class="combos-hero-content">
+    <div class="hero-tag animate-fade-in-right delay-150">
+      <span class="line"></span>
+      <span>Combos & Tablas</span>
+    </div>
+
+    <h1>
+      <span class="animate-fade-in-up delay-200">Comparte la</span>
+      <span class="accent animate-fade-in-up delay-300">experiencia</span>
+      <span class="stroke animate-fade-in-up delay-400">sushi perfecta</span>
+    </h1>
+
+    <p class="hero-desc animate-fade-in-up delay-500">
+      Tablas para compartir, Bento Box individuales y combos familiares
+      preparados al momento con los ingredientes más frescos.
+    </p>
+  </div>
+</section>
+
+<!-- Tablas Section -->
+<SectionContainer title="Tablas" subtitle="Perfectas para compartir">
+  <div class="grid grid-cols-1 gap-6">
+    {
+      TABLAS.map((combo) => (
+        <article class="group bg-neutral-900 rounded-lg overflow-hidden border border-(--gold)/10 transition-all duration-300 hover:border-(--gold)/30 hover:-translate-y-1">
+          <a
+            href={`/combos/${combo.slug}`}
+            class="block text-inherit no-underline"
+          >
+            <div class="relative h-32 sm:h-40 md:h-80 lg:h-96 overflow-hidden">
+              <img
+                src={combo.image}
+                alt={combo.description}
+                class="w-full h-full object-cover object-left lg:object-center"
+                transition:name={`combo-${combo.slug}-image`}
+              />
+
+              <div class="absolute inset-0 bg-linear-to-t from-black via-black/20 to-transparent" />
+
+              <div class="absolute top-4 right-4 rounded-full bg-(--gold) px-1 py-0.5 md:px-4 md:py-2">
+                <span class="flex items-center gap-1 font-bold text-black text-xs md:text-base">
+                  Ver detalles <ArrowRight class="size-4" />
+                </span>
+              </div>
+            </div>
+          </a>
+        </article>
+      ))
+    }
+  </div>
+</SectionContainer>
+
+<!-- Bentos Section -->
+<SectionContainer title="Bentos" subtitle="Tu comida completa">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {
+      BENTOS.map((combo) => (
+        <article class="group bg-neutral-900 rounded-lg overflow-hidden border border-(--gold)/10 transition-all duration-300 hover:border-(--gold)/30 hover:-translate-y-1">
+          <a
+            href={`/combos/${combo.slug}`}
+            class="block text-inherit no-underline"
+          >
+            <div class="relative aspect-square overflow-hidden">
+              <img
+                src={combo.image}
+                alt={combo.description}
+                loading="lazy"
+                class="w-full h-full object-cover saturate-[0.85] transition-transform duration-500 group-hover:scale-105 group-hover:saturate-100"
+                transition:name={`combo-${combo.slug}-image`}
+              />
+
+              <div
+                class="
+                    absolute bottom-4 right-4 rounded-full bg-(--gold) px-4 py-2 text-sm font-bold
+                    text-black flex items-center gap-1
+                    "
+              >
+                Ver detalles <ArrowRight class="size-4" />
+              </div>
+            </div>
+          </a>
+        </article>
+      ))
+    }
+  </div>
+</SectionContainer>
+
+<!-- Combo Familiar Section -->
+<SectionContainer title="Combo Familiar" subtitle="La estrella de la casa">
+  <article
+    class="bg-neutral-900 rounded-lg overflow-hidden border-2 border-(--gold)/20"
+  >
+    <div class="grid grid-cols-1 md:grid-cols-2 text-inherit no-underline">
+      <div class="aspect-square overflow-hidden">
+        <img
+          src={FAMILIAR?.image}
+          alt={FAMILIAR?.description}
+          loading="lazy"
+          class="w-full h-full object-cover"
+          transition:name={`combo-${FAMILIAR?.slug}-image`}
+        />
+      </div>
+
+      <div class="p-6 sm:p-8 md:p-12 flex flex-col">
+        <span
+          class="inline-block bg-(--gold) text-black px-4 py-2 text-xs font-semibold tracking-widest uppercase rounded-full mb-6 w-fit"
+        >
+          Más pedido
+        </span>
+
+        <h3
+          class="font-sans text-3xl sm:text-4xl md:text-5xl text-white mb-4"
+          transition:name={`combo-${FAMILIAR?.slug}`}
+        >
+          {FAMILIAR?.name}
+        </h3>
+
+        <p class="text-neutral-400 text-base leading-relaxed mb-6">
+          {FAMILIAR?.shortDescription}
+        </p>
+
+        <div class="font-sans text-4xl md:text-5xl text-(--gold) mb-6">
+          S/. {FAMILIAR?.price}
+        </div>
+
+        <ul class="list-none p-0 m-0 mb-8">
+          {
+            FAMILIAR?.includes.map((item) => (
+              <li class="flex items-center gap-3 text-sm text-neutral-400 mb-2">
+                <span class="text-(--gold) font-bold">✓</span>
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="mt-auto">
+          <a
+            href={`/combos/${FAMILIAR?.slug}`}
+            class="inline-block bg-(--gold) hover:bg-[#dfaa4c] text-black py-3.5 px-8 font-medium text-xs tracking-widest uppercase no-underline transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+          >
+            Ver combo
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+</SectionContainer>
+
+<style>
+  /* Hero Section */
+  .combos-hero {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    background: var(--black);
+  }
+
+  .combos-hero-content {
+    max-width: 800px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+  }
+
+  .hero-tag .line {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-tag span {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .combos-hero h1 {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(3rem, 6vw, 5rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.5rem;
+  }
+
+  .combos-hero h1 .accent {
+    color: var(--gold);
+    display: block;
+  }
+
+  .combos-hero h1 .stroke {
+    -webkit-text-stroke: 1px rgba(250, 247, 242, 0.3);
+    color: transparent;
+    display: block;
+  }
+
+  .hero-desc {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .combos-hero {
+      padding: 6rem 2rem 3rem;
+      min-height: 50vh;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .combos-hero {
+      padding: 5rem 1.5rem 3rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .combos-hero {
+      padding: 4rem 1rem 2rem;
+      min-height: 40vh;
+    }
+
+    .combos-kanji {
+      display: none;
+    }
+  }
+</style>

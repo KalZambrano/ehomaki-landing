@@ -1,12 +1,10 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
-import CartaPage from "@/components/pages/CartaPage.astro";
+import CarritoApp from "@/components/pages/CarritoApp";
 ---
 
 <Layout>
   <Header />
-  <CartaPage />
+  <CarritoApp client:load />
 </Layout>
-
-
