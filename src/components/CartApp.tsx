@@ -92,26 +92,47 @@ export default function CartApp({ handleCloseCart }: { handleCloseCart: any }) {
         id="cartFooter"
         style={{ display: cart.length === 0 ? "none" : "block" }}
       >
-        <div className="flex justify-between mb-2 text-[0.8rem] text-muted">
-          <span>Subtotal</span>
-          <span>{formatCurrency(subtotal)}</span>
-        </div>
-        <div className="flex justify-between mb-2 text-[0.8rem] text-muted">
-          <span>Delivery (a confirmar)</span>
-          <span>—</span>
-        </div>
-        <div className="flex justify-between items-baseline mb-6 pt-3 border-t border-border">
+        <div className="flex justify-between items-baseline mb-6">
           <span className="text-[0.75rem] tracking-[0.15em] uppercase text-muted">
-            Total
+            Subtotal
           </span>
           <span className="font-['Bebas_Neue',sans-serif] text-[2rem] text-(--gold)">
             {formatCurrency(subtotal)}
           </span>
         </div>
-        <button className="checkout-btn">Ordenar</button>
+        <a
+          href="/carrito"
+          className="
+    group
+    inline-flex w-full items-center justify-center gap-2
+
+    rounded-full
+    bg-(--gold)
+
+    px-6 py-4
+
+    text-sm font-bold uppercase tracking-[0.18em]
+    text-black
+
+    transition-all duration-300
+
+    hover:-translate-y-1
+    hover:bg-[#dfaa4c]
+    hover:shadow-[0_10px_30px_rgba(200,155,60,0.3)]
+
+    active:translate-y-0
+  "
+        >
+          Continuar
+          <span className="transition-transform duration-300 group-hover:translate-x-1">
+            →
+          </span>
+        </a>
         <button
           type="button"
-          className="font-medium flex mx-auto p-4 cursor-pointer"
+          className="group mx-auto mt-5 text-sm flex font-medium tracking-[0.08em] text-white/70 
+          transition-all duration-300 cursor-pointer
+          hover:text-(--gold)"
           id="checkoutBtn"
           aria-label="Enviar pedido por WhatsApp"
           onClick={() => {
@@ -146,7 +167,7 @@ ${lines}
             );
           }}
         >
-          Pedir por WhatsApp →
+          Continuar por WhatsApp →
         </button>
       </div>
     </>

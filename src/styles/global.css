@@ -297,6 +297,7 @@ html.high-contrast {
 }
 .cart-item {
   display: grid;
+  margin-bottom: 10px;
   grid-template-columns: 76px minmax(0, 1fr) auto;
   gap: 0.9rem;
   padding: 0.9rem;
