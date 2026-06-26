@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { formatCurrency } from "@/hooks/useCart";
 import type { CartItem } from "@/hooks/useCart";
-import { User, CreditCard } from "lucide-react";
+import { User, CreditCard, MapPin, Loader } from "lucide-react";
 
 interface OrderModalProps {
   open: boolean;
@@ -17,6 +17,11 @@ const PAYMENT_METHODS = [
   { id: "plin", label: "Plin" },
 ];
 
+type Customer = {
+  name: string;
+  phone: string;
+};
+
 export default function OrderModal({
   open,
   onClose,
@@ -24,27 +29,58 @@ export default function OrderModal({
   orden,
   envio,
 }: OrderModalProps) {
-  const [step, setStep] = useState<1 | 2>(1);
+  // Determinar el número máximo de steps basado en si es delivery
+  const totalSteps = envio === "delivery" ? 3 : 2;
+  // const stepType = (step: number): 1 | 2 | 3 => step as 1 | 2 | 3;
+
+  const [step, setStep] = useState<1 | 2 | 3>(1);
   const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
-  // Al inicio del componente, junto al resto de estados
-  const [customerName, setCustomerName] = useState(() => {
+
+  // Estados para dirección
+  const [address, setAddress] = useState(() => {
     if (typeof window === "undefined") return "";
-    return localStorage.getItem("customerName") ?? "";
+    return localStorage.getItem("customerAddress") ?? "";
   });
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
+  const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+  const [locationError, setLocationError] = useState<string | null>(null);
+
+  // Al inicio del componente, junto al resto de estados
+  const [customerName, setCustomerName] = useState<Customer>(() => {
+    if (typeof window === "undefined") return { name: "", phone: "" };
+    const stored = localStorage.getItem("customerName");
+    try {
+      return stored
+        ? (JSON.parse(stored) as Customer)
+        : { name: "", phone: "" };
+    } catch {
+      return { name: "", phone: "" };
+    }
+  });
+  const [showPhoneWarning, setShowPhoneWarning] = useState(false);
   const [keepName, setKeepName] = useState(() => {
     if (typeof window === "undefined") return false;
     return localStorage.getItem("keepName") === "true";
   });
 
   const payloadOrden = orden.map((item) => ({
-    id: item.id,
+    catalogId: item.id,
+    name: item.name,
+    unitPrice: item.price,
     quantity: item.qty,
-    items: item.items,
+    details: item.items ?? [],
   }));
 
-  const ordenInfo = {
-    cliente: customerName,
-    metodoPago: selectedPayment,
+  const payload = {
+    guestId: getOrCreateGuestId(),
+    customerName: customerName.name,
+    phone: customerName.phone,
+    paymentMethod: selectedPayment,
+    deliveryType: envio,
+    latitude: latitude,
+    longitude: longitude,
+    address: address,
     total: total,
     items: payloadOrden,
   };
@@ -57,22 +93,88 @@ export default function OrderModal({
     return newId;
   }
 
+  // Función para obtener ubicación actual
+  const handleGetCurrentLocation = async () => {
+    setIsLoadingLocation(true);
+    setLocationError(null);
+
+    if (!navigator.geolocation) {
+      setLocationError("Geolocalización no disponible en tu navegador");
+      setIsLoadingLocation(false);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude: lat, longitude: lng } = position.coords;
+
+        setLatitude(lat);
+        setLongitude(lng);
+
+        try {
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
+          );
+
+          const data = await response.json();
+
+          // console.log(data);
+
+          // Dirección completa
+          // setAddress(data.display_name);
+
+          // O puedes armar una dirección más corta:
+
+          const address = [
+            data.address.road,
+            data.address.house_number,
+            data.address.suburb,
+            data.address.city,
+          ]
+            .filter(Boolean)
+            .join(", ");
+
+          setAddress(address);
+
+          setLocationError(null);
+        } catch (error) {
+          setLocationError("No pudimos obtener la dirección.");
+        }
+
+        setIsLoadingLocation(false);
+      },
+      (error) => {
+        setLocationError(
+          "No pudimos obtener tu ubicación. Por favor, ingresa la dirección manualmente.",
+        );
+
+        setIsLoadingLocation(false);
+      },
+    );
+  };
+
   // Handler unificado para el checkbox
   const handleKeepName = (checked: boolean) => {
     setKeepName(checked);
     if (checked) {
       localStorage.setItem("keepName", "true");
-      localStorage.setItem("customerName", customerName);
+      localStorage.setItem("customerName", JSON.stringify(customerName));
     } else {
       localStorage.removeItem("keepName");
       localStorage.removeItem("customerName");
     }
   };
 
-  // Handler para el input — si keep está activo, persiste en tiempo real
-  const handleNameChange = (value: string) => {
+  // Handler para actualizar el objeto Customer
+  const handleCustomerChange = (value: Customer) => {
     setCustomerName(value);
-    if (keepName) localStorage.setItem("customerName", value);
+    if (keepName) localStorage.setItem("customerName", JSON.stringify(value));
+  };
+
+  const handlePhoneChange = (value: string) => {
+    const phone = value.replace(/\D/g, "").slice(0, 9);
+    handleCustomerChange({ ...customerName, phone });
+    if (/^\d{9}$/.test(phone)) setShowPhoneWarning(false);
   };
 
   useEffect(() => {
@@ -84,40 +186,46 @@ export default function OrderModal({
 
   if (!open) return null;
 
-  const isNameValid = customerName.trim().length > 0;
+  const isNameValid = customerName.name.trim().length > 0;
+  const isPhoneValid = /^\d{9}$/.test(customerName.phone);
+  const isAddressValid =
+    envio === "delivery" ? address.trim().length > 0 : true;
   const canConfirm = selectedPayment !== null;
 
   const handleClose = () => {
     setStep(1);
-    !keepName && setCustomerName("");
+    !keepName && setCustomerName({ name: "", phone: "" });
     setSelectedPayment(null);
+    setAddress("");
+    setLatitude(null);
+    setLongitude(null);
+    setLocationError(null);
+    setShowPhoneWarning(false);
     onClose();
   };
 
   const enviarPedido = () => {
-    console.warn("Enviando pedido");
-    console.log("Total:", total);
-    console.log("Método de pago:", selectedPayment);
-    console.log("Nombre del cliente:", customerName);
-    console.log("Envio:", envio);
-    console.log("Guest ID:", getOrCreateGuestId());
-    console.log("Items:", ordenInfo);
+    // console.warn("Enviando pedido");
+    // console.log("Total:", total);
+    // console.log("Método de pago:", selectedPayment);
+    // console.log("Nombre del cliente:", customerName);
+    // console.log("Envio:", envio);
+    // console.log("Guest ID:", getOrCreateGuestId());
+    // console.log(payload);
 
     handleClose();
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
-      onClick={handleClose}
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
       <div
         className="flex w-full max-w-md max-h-[85dvh] flex-col overflow-hidden rounded-3xl border border-(--gold)/10 bg-[#111] shadow-[0_20px_60px_rgba(0,0,0,.5)]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Stepper */}
-        <div className="flex shrink-0 items-center justify-center gap-3 border-b border-white/5 px-7 pt-7 pb-5">
-          <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center justify-center gap-3 border-b border-white/5 px-7 pt-7 pb-5 overflow-x-auto">
+          {/* Paso 1: Datos */}
+          <div className="flex items-center gap-2 shrink-0">
             <span
               className={`flex h-9 w-9 items-center justify-center rounded-full border ${
                 step === 1
@@ -128,18 +236,43 @@ export default function OrderModal({
               <User className="size-4" />
             </span>
             <span
-              className={`text-xs font-medium ${step === 1 ? "text-white" : "text-white/30"}`}
+              className={`text-xs font-medium whitespace-nowrap ${step === 1 ? "text-white" : "text-white/30"}`}
             >
               Datos
             </span>
           </div>
 
-          <div className="h-px w-8 bg-white/10" />
+          <div className="h-px w-8 bg-white/10 shrink-0" />
 
-          <div className="flex items-center gap-2">
+          {/* Paso 2: Ubicación (solo si es delivery) */}
+          {envio === "delivery" && (
+            <>
+              <div className="flex items-center gap-2 shrink-0">
+                <span
+                  className={`flex h-9 w-9 items-center justify-center rounded-full border ${
+                    step === 2
+                      ? "border-(--gold) text-(--gold)"
+                      : "border-white/10 text-white/30"
+                  }`}
+                >
+                  <MapPin className="size-4" />
+                </span>
+                <span
+                  className={`text-xs font-medium whitespace-nowrap ${step === 2 ? "text-white" : "text-white/30"}`}
+                >
+                  Ubicación
+                </span>
+              </div>
+
+              <div className="h-px w-8 bg-white/10 shrink-0" />
+            </>
+          )}
+
+          {/* Paso 2/3: Pago */}
+          <div className="flex items-center gap-2 shrink-0">
             <span
               className={`flex h-9 w-9 items-center justify-center rounded-full border ${
-                step === 2
+                step === totalSteps
                   ? "border-(--gold) text-(--gold)"
                   : "border-white/10 text-white/30"
               }`}
@@ -147,7 +280,7 @@ export default function OrderModal({
               <CreditCard className="size-4" />
             </span>
             <span
-              className={`text-xs font-medium ${step === 2 ? "text-white" : "text-white/30"}`}
+              className={`text-xs font-medium whitespace-nowrap ${step === totalSteps ? "text-white" : "text-white/30"}`}
             >
               Pago
             </span>
@@ -174,14 +307,19 @@ export default function OrderModal({
                 Lo usaremos para identificarlo al recogerlo o entregarlo.
               </p>
 
-              <label htmlFor="customerName" className="sr-only">
+              <label htmlFor="customerNameName" className="sr-only">
                 Nombre del pedido
               </label>
               <input
-                id="customerName"
+                id="customerNameName"
                 type="text"
-                value={customerName}
-                onChange={(e) => handleNameChange(e.target.value)}
+                value={customerName.name}
+                onChange={(e) =>
+                  handleCustomerChange({
+                    ...customerName,
+                    name: e.target.value,
+                  })
+                }
                 placeholder="Ej. María Torres"
                 className="
     mt-2 w-full rounded-xl border border-white/10 bg-white/3
@@ -189,6 +327,29 @@ export default function OrderModal({
     outline-none transition-colors focus:border-(--gold)/40
   "
               />
+
+              <label htmlFor="customerPhone" className="sr-only">
+                Teléfono del cliente
+              </label>
+              <input
+                id="customerPhone"
+                type="tel"
+                inputMode="numeric"
+                maxLength={9}
+                value={customerName.phone}
+                onChange={(e) => handlePhoneChange(e.target.value)}
+                placeholder="Ej. 987654321"
+                className="
+    mt-2 w-full rounded-xl border border-white/10 bg-white/3
+    px-4 py-3 text-white placeholder:text-white/30
+    outline-none transition-colors focus:border-(--gold)/40
+  "
+              />
+              {showPhoneWarning && !isPhoneValid && (
+                <p className="text-xs text-amber-300/90">
+                  Ingresa un numero de telefono valido de 9 digitos.
+                </p>
+              )}
 
               <label className="mt-3 flex cursor-pointer items-center gap-2.5 select-none">
                 <div className="relative">
@@ -232,7 +393,80 @@ export default function OrderModal({
             </div>
           )}
 
-          {step === 2 && (
+          {/* Paso 2: Ubicación (solo si es delivery) */}
+          {envio === "delivery" && step === 2 && (
+            <div className="flex flex-col gap-4">
+              <div>
+                <h2 className="text-xl font-bold text-white">
+                  ¿Dónde te lo entregamos?
+                </h2>
+                <p className="text-sm text-white/50 mt-1">
+                  Selecciona tu ubicación o ingresa la dirección manualmente.
+                </p>
+              </div>
+
+              {/* Botón para usar ubicación actual */}
+              <button
+                type="button"
+                disabled={isLoadingLocation}
+                onClick={handleGetCurrentLocation}
+                className="
+                  w-full flex items-center justify-center gap-2 rounded-xl border border-(--gold)/20
+                  px-4 py-3 text-sm font-medium text-white/70 transition-colors
+                  hover:border-(--gold)/40 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed
+                "
+              >
+                {isLoadingLocation ? (
+                  <>
+                    <Loader className="size-4 animate-spin" />
+                    Obteniendo ubicación...
+                  </>
+                ) : (
+                  <>
+                    <MapPin className="size-4" />
+                    Usar mi ubicación actual
+                  </>
+                )}
+              </button>
+
+              {locationError && (
+                <p className="text-xs text-red-400/80">{locationError}</p>
+              )}
+
+              {/* {latitude && longitude && (
+                <div className="rounded-lg bg-white/5 border border-(--gold)/20 p-3">
+                  <p className="text-xs text-white/50">
+                    Coordenadas capturadas
+                  </p>
+                  <p className="text-sm text-white/80 font-mono">
+                    {latitude.toFixed(4)}, {longitude.toFixed(4)}
+                  </p>
+                </div>
+              )} */}
+
+              {/* Input de dirección manual */}
+              <div>
+                <label htmlFor="address" className="sr-only">
+                  Dirección de entrega
+                </label>
+                <input
+                  id="address"
+                  type="text"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  placeholder="Ingresa tu dirección aquí"
+                  className="
+                    w-full rounded-xl border border-white/10 bg-white/3
+                    px-4 py-3 text-white placeholder:text-white/30
+                    outline-none transition-colors focus:border-(--gold)/40
+                  "
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Paso 2 (si no es delivery) o Paso 3 (si es delivery): Pago */}
+          {step === totalSteps && (
             <div className="flex flex-col gap-5">
               <div>
                 <p className="text-sm text-white/50">Total a pagar</p>
@@ -296,10 +530,10 @@ export default function OrderModal({
         {/* Footer: navegación entre pasos */}
         <div className="shrink-0 border-t border-(--gold)/10 px-7 pt-5 pb-7">
           <div className="flex items-center gap-3">
-            {step === 2 && (
+            {step > 1 && (
               <button
                 type="button"
-                onClick={() => setStep(1)}
+                onClick={() => setStep((s) => (s - 1) as 1 | 2 | 3)}
                 className="
                   flex-1 rounded-full border border-(--gold)/20 py-3
                   text-sm font-medium text-white/70 transition-colors
@@ -312,8 +546,28 @@ export default function OrderModal({
 
             <button
               type="button"
-              disabled={step === 1 ? !isNameValid : !canConfirm}
-              onClick={() => (step === 1 ? setStep(2) : enviarPedido())}
+              disabled={
+                step === 1
+                  ? !isNameValid
+                  : step === 2 && envio === "delivery"
+                    ? !isAddressValid
+                    : !canConfirm
+              }
+              onClick={() => {
+                if (step === 1) {
+                  if (!isPhoneValid) {
+                    setShowPhoneWarning(true);
+                    return;
+                  }
+                  setStep(2);
+                } else if (step === 2 && envio === "delivery") {
+                  setStep(3);
+                } else if (step === totalSteps) {
+                  enviarPedido();
+                } else {
+                  setStep((s) => (s + 1) as 1 | 2 | 3);
+                }
+              }}
               className="
                 flex-1 rounded-full bg-(--gold) py-3
                 text-sm font-medium text-black
@@ -321,8 +575,20 @@ export default function OrderModal({
                 disabled:cursor-not-allowed disabled:opacity-30
               "
             >
-              {step === 1 ? "Siguiente" : "Confirmar pedido"}
+              {step === 1
+                ? "Siguiente"
+                : step === totalSteps
+                  ? "Confirmar pedido"
+                  : "Siguiente"}
             </button>
+          </div>
+          <div
+            className="flex-1 rounded-full border border-red-400/40 py-3
+                  text-sm font-medium text-red-400/70 transition-colors
+                  hover:border-(--gold)/40 hover:text-red-400 text-center mt-3 cursor-pointer"
+            onClick={handleClose}
+          >
+            Cancelar
           </div>
         </div>
       </div>
