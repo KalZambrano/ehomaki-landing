@@ -19,6 +19,7 @@
     "@fontsource/bebas-neue": "^5.2.7",
     "@fontsource/dm-sans": "^5.2.8",
     "@fontsource/noto-serif-jp": "^5.2.8",
+    "@supabase/supabase-js": "^2.108.2",
     "@tailwindcss/vite": "^4.2.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
