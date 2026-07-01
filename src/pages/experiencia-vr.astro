@@ -1,0 +1,49 @@
+---
+import "@/styles/global.css";
+import "@fontsource-variable/onest/wght.css";
+import "@fontsource/bebas-neue";
+import "@fontsource/dm-sans";
+import "@fontsource/noto-serif-jp";
+
+import AccesibilityApp from "@/components/ui/accesibility-app.astro";
+import ExperienciaVR from "@/components/ExperienciaVR";
+
+// Página standalone e inmersiva a pantalla completa: NO usa <Layout> porque
+// este agrega Footer, carrito y Toast globales que no tienen sentido aquí
+// (rompen la inmersión y el Footer quedaría fuera de vista al ser fixed/overflow-hidden).
+// Sí reutilizamos fuentes, global.css y metadatos para mantener marca/tipografía,
+// y conservamos el widget de accesibilidad por ser un requisito transversal del sitio.
+// Si prefieres otro criterio (p.ej. sí mostrar el Footer), avísame y lo ajusto.
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0805" />
+    <link rel="icon" type="image/svg+xml" href="/sushi-icon.svg" />
+    <title>Recorrido Virtual — Ehomakis</title>
+    <meta
+      name="description"
+      content="Vive una experiencia 3D en primera persona: siéntate a la mesa, elige un plato de nuestra carta y velo servido frente a ti."
+    />
+  </head>
+  <body>
+    <ExperienciaVR client:only="react" />
+    <AccesibilityApp />
+  </body>
+</html>
+
+<style is:global>
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--black);
+  }
+</style>
+

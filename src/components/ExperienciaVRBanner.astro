@@ -1,0 +1,128 @@
+---
+// Banner de invitación a la experiencia VR. Colócalo en App.astro donde
+// prefieras (recomendado: justo después de <Menu /> o antes de <Combos />).
+---
+
+<section class="evr-banner">
+  <div class="evr-banner-kanji">膳</div>
+  <div class="evr-banner-content">
+    <div class="evr-banner-tag">
+      <span class="line"></span>
+      <span>Experiencia 3D</span>
+    </div>
+    <h2>
+      Siéntate a <span class="accent">nuestra mesa</span>
+    </h2>
+    <p>
+      Recorre Ehomakis en primera persona: elige un plato de la carta y
+      obsérvalo servido frente a ti, como si estuvieras aquí.
+    </p>
+    <a href="/experiencia-vr" class="btn-primary">Vivir la experiencia</a>
+  </div>
+</section>
+
+<style>
+  .evr-banner {
+    position: relative;
+    overflow: hidden;
+    padding: 6rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: radial-gradient(
+        circle at 50% 30%,
+        color-mix(in srgb, var(--gold) 8%, transparent),
+        transparent 60%
+      ),
+      var(--black);
+  }
+
+  .evr-banner-kanji {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "Noto Serif JP", serif;
+    font-weight: 900;
+    font-size: min(40vw, 22rem);
+    line-height: 1;
+    color: color-mix(in srgb, var(--gold) 6%, transparent);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .evr-banner-content {
+    position: relative;
+    z-index: 1;
+    max-width: 620px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .evr-banner-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .evr-banner-tag .line {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .evr-banner-tag span {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .evr-banner h2 {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    margin-bottom: 1.25rem;
+  }
+  .evr-banner h2 .accent {
+    color: var(--gold);
+  }
+
+  .evr-banner p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 0.9rem 2rem;
+    font-family: "DM Sans", sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+    clip-path: polygon(
+      0 0,
+      calc(100% - 8px) 0,
+      100% 8px,
+      100% 100%,
+      8px 100%,
+      0 calc(100% - 8px)
+    );
+  }
+  .btn-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+  }
+</style>
